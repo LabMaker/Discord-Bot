@@ -1,0 +1,15 @@
+{
+  "name": "blixkbot",
+  "version": "1.0.0",
+  "description": "Simple Discord Bot",
+  "main": "main.js",
+  "scripts": {
+    "run": "node main.js"
+  },
+  "author": "DanA",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "discord.js": "^12.5.1"
+  }
+}
