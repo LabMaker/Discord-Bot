@@ -4,7 +4,7 @@
   "description": "Simple Discord Bot",
   "main": "main.js",
   "scripts": {
-    "run": "node main.js"
+    "start": "node main.js"
   },
   "author": "DanA",
   "license": "ISC",
