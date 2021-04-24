@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const config = require("./config.json");
+require("dotenv").config();
 
 const client = new Discord.Client();
 
@@ -22,9 +22,10 @@ client.once("ready", () => {
 });
 
 client.on("message", (message) => {
-  if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+  if (!message.content.startsWith(process.env.prefix) || message.author.bot)
+    return;
 
-  const args = message.content.slice(config.prefix.length).split(/ +/);
+  const args = message.content.slice(process.env.prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
   //const id = client.guilds.get("GUILD-ID");
 
@@ -39,4 +40,12 @@ client.on("message", (message) => {
   }
 });
 
-client.login(config.token);
+client.on("channelCreate", (channel) => {
+  let x = channel.guild.me.joinedTimestamp / 1000;
+  if (x <= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
+
+  console.log("Valid event!");
+  channel.send("Test");
+});
+
+client.login(process.env.token);
