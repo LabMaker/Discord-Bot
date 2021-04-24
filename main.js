@@ -1,10 +1,9 @@
+require("dotenv").config();
 const { Console } = require("console");
 const Discord = require("discord.js");
 const fs = require("fs");
 const Keyv = require("keyv");
-const keyv = new Keyv("mysql://root:@localhost:3306/discord_bot");
-require("dotenv").config();
-
+const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
 
 client.commands = new Discord.Collection();
@@ -75,7 +74,7 @@ client.on("channelCreate", (channel) => {
       `Welcome, Im going to need some more information before i can find you a tutor. (Enter !stop ${ticketID} at Anytime to cancel).`
     );
 
-    const ticket = new Keyv("mysql://root:@localhost:3306/discord_bot", {
+    const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
 
