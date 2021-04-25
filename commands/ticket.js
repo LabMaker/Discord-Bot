@@ -35,7 +35,9 @@ module.exports = {
       );
     } else if (level == undefined) {
       await ticket.set("level", message.content);
-      message.channel.send(`**What is your budget?**`);
+      message.channel.send(
+        `**What is your budget?** (Include currency if isn't \`£ for GBP\` or \`$ for USD\`)`
+      );
     } else if (budget == undefined) {
       await ticket.set("budget", message.content);
       const ticketEmbed = new Discord.MessageEmbed()
