@@ -7,7 +7,7 @@ module.exports = {
   async execute(message, args) {
     if (!args[0]) return message.channel.send("Usage: !ticket <@ID>");
 
-    ticketID = message.channel.name.substr(8);
+    ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });

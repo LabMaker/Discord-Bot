@@ -1,12 +1,14 @@
 const Keyv = require("keyv");
 const Discord = require("discord.js");
+const { sendLog } = require("./../logChannel.js");
 require("dotenv").config();
 
 module.exports = {
   name: "ticket",
   description: "Handles new Ticket",
   async execute(message, client) {
-    ticketID = message.channel.name.substr(8);
+    ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
+
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
@@ -24,16 +26,18 @@ module.exports = {
     if (type == undefined) {
       await ticket.set("type", message.content);
       message.channel.send(
-        `What Date & Time is the ${message.content} (Include Timezone)`
+        `**What date & time is the ${message.content}?** (Include Timezone)`
       );
     } else if (time == undefined) {
       await ticket.set("time", message.content);
       message.channel.send(
-        `What Level of Education is this Including Year (University/College)`
+        `**What level of education is this including year?** (University/College)`
       );
     } else if (level == undefined) {
       await ticket.set("level", message.content);
-      message.channel.send(`What is your budget?`);
+      message.channel.send(
+        `**What is your budget?** (Include currency if isn't \`£ for GBP\` or \`$ for USD\`)`
+      );
     } else if (budget == undefined) {
       await ticket.set("budget", message.content);
       const ticketEmbed = new Discord.MessageEmbed()
@@ -56,21 +60,13 @@ module.exports = {
         .setThumbnail("https://i.imgur.com/gPYO6A1.gif")
         .setTimestamp();
       await ticket.set("submitted", true);
+
       message.channel.send(ticketEmbed);
       message.channel.send(
-        `Your Ticket has been submitted a helper should be with you shortly`
+        `**Your Ticket has been submitted!** A helper will be with you shortly.`
       );
 
-      client.guilds
-        .fetch("826449038727184404")
-        .then(async (guild) => {
-          logChannel = guild.channels.cache.get("835467376467116053");
-          if (logChannel)
-            setTimeout(() => {
-              logChannel.send(ticketEmbed);
-            }, 1500);
-        })
-        .catch(console.error);
+      sendLog(client, ticketEmbed);
     }
   },
 };

@@ -1,10 +1,10 @@
 require("dotenv").config();
-const { Console } = require("console");
 const Discord = require("discord.js");
 const fs = require("fs");
 const Keyv = require("keyv");
 const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
+const { sendLog } = require("./logChannel.js");
 
 client.commands = new Discord.Collection();
 const commandFiles = fs
@@ -54,24 +54,16 @@ client.on("message", (message) => {
 client.on("channelCreate", (channel) => {
   let x = channel.guild.me.joinedTimestamp / 1000;
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
-  ticketID = channel.name.substr(8);
+  ticketID = channel.name.toLowerCase().replace("ticket-", "");
 
-  client.guilds
-    .fetch("826449038727184404")
-    .then((guild) => {
-      logChannel = guild.channels.cache.get("835467376467116053");
-      if (logChannel)
-        setTimeout(() => {
-          logChannel.send(
-            `A Ticket Was Created by with ID ${ticketID} <@342052641146142734>`
-          );
-        }, 1500);
-    })
-    .catch(console.error);
+  sendLog(
+    client,
+    `A Ticket Was Created by with ID ${ticketID} <@342052641146142734>`
+  );
 
   setTimeout(async () => {
     channel.send(
-      `Welcome, Im going to need some more information before i can find you a tutor. (Enter !stop ${ticketID} at Anytime to cancel).`
+      `Welcome! I'm going to need some more information before I can find you a suitable tutor. (Enter !stop ${ticketID} at Anytime to cancel).`
     );
 
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
@@ -81,7 +73,7 @@ client.on("channelCreate", (channel) => {
     await ticket.set("submitted", false);
 
     channel.send(
-      `Is This an Exam, Assignment or Homeworksheet? Include the subject aswell.`
+      `**Is this an exam, assignment or homework sheet?** Include the subject as well.`
     );
   }, 1500);
 });
@@ -100,11 +92,7 @@ client.on("inviteCreate", (invite) => {
         return;
       }
 
-      logChannel = guild.channels.cache.get("835467376467116053");
-      if (logChannel)
-        setTimeout(() => {
-          logChannel.send(`An Invite Was Created by ${invite.inviter}`);
-        }, 1500);
+      sendLog(client, `An Invite Was Created by ${invite.inviter}`);
     })
     .catch(console.error);
 });
