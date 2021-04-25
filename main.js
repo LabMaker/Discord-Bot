@@ -4,7 +4,7 @@ const fs = require("fs");
 const Keyv = require("keyv");
 const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
-const { sendLog } = require("./logChannel.js");
+const { sendLog } = require("./utils/logChannel.js");
 
 client.commands = new Discord.Collection();
 const commandFiles = fs
@@ -78,23 +78,22 @@ client.on("channelCreate", (channel) => {
   }, 1500);
 });
 
-client.on("inviteCreate", (invite) => {
-  client.guilds
-    .fetch("826449038727184404")
-    .then(async (guild) => {
-      let member = await invite.guild.members.fetch(invite.inviter.id);
+client.on("inviteCreate", async (invite) => {
+  await invite.guild.fetch();
+  let member = await invite.guild.members.fetch(invite.inviter.id);
 
-      if (
-        member.roles.cache.find((r) => r.name === "Admin") ||
-        member.roles.chache.find((r) => r.name === "Helper")
-      ) {
-        console.log("Invite Creater has Admin/Helper Role");
-        return;
-      }
+  /*const hasAdmin = await member.roles.cache.find((r) => r.name === "Admin");
+  const hasHelper = await member.roles.cache.find((r) => r.name === "Admin");
+  console.log(hasAdmin, hasHelper); */
+  if (
+    member.roles.cache.find((r) => r.name === "Admin") ||
+    member.roles.cache.find((r) => r.name === "Helper")
+  ) {
+    console.log("Invite Creater has Admin/Helper Role");
+    return;
+  }
 
-      sendLog(client, `An Invite Was Created by ${invite.inviter}`);
-    })
-    .catch(console.error);
+  sendLog(client, `An Invite Was Created by ${invite.inviter}`);
 });
 
 client.login(process.env.token);

@@ -1,6 +1,6 @@
 const Keyv = require("keyv");
 const Discord = require("discord.js");
-const { sendLog } = require("./../logChannel.js");
+const { sendLog } = require("./../utils/logChannel.js");
 require("dotenv").config();
 
 module.exports = {
