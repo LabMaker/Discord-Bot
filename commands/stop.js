@@ -4,7 +4,7 @@ module.exports = {
   description: "Stops the current ticket",
   execute(message, args) {
     if (!args[0]) return message.channel.send("Usage: !stop <@Ticket Id>");
-    ticketID = message.channel.name.substr(8);
+    ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
 
     if (args[0] != ticketID) {
       return message.channel.send(`Ticket ID not created by ${message.member}`);

@@ -54,18 +54,19 @@ client.on("message", (message) => {
 client.on("channelCreate", (channel) => {
   let x = channel.guild.me.joinedTimestamp / 1000;
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
-  ticketID = channel.name.substr(8);
+  ticketID = channel.name.toLowerCase().replace("ticket-", "");
 
   client.guilds
     .fetch("826449038727184404")
     .then((guild) => {
       logChannel = guild.channels.cache.get("835467376467116053");
-      if (logChannel)
+      if (logChannel) {
         setTimeout(() => {
           logChannel.send(
             `A Ticket Was Created by with ID ${ticketID} <@342052641146142734>`
           );
         }, 1500);
+      }
     })
     .catch(console.error);
 

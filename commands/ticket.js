@@ -6,7 +6,9 @@ module.exports = {
   name: "ticket",
   description: "Handles new Ticket",
   async execute(message, client) {
-    ticketID = message.channel.name.substr(8);
+    ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
+    console.log(ticketID);
+
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
