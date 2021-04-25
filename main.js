@@ -87,9 +87,6 @@ client.on("inviteCreate", async (invite) => {
   await invite.guild.fetch();
   let member = await invite.guild.members.fetch(invite.inviter.id);
 
-  /*const hasAdmin = await member.roles.cache.find((r) => r.name === "Admin");
-  const hasHelper = await member.roles.cache.find((r) => r.name === "Admin");
-  console.log(hasAdmin, hasHelper); */
   if (
     member.roles.cache.find((r) => r.name === "Admin") ||
     member.roles.cache.find((r) => r.name === "Helper")

@@ -16,7 +16,7 @@ module.exports = {
     const Discord = require("discord.js");
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
 
-    let ticket = new Keyv(process.env.DB_CONN_STRING, {
+    const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
 

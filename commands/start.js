@@ -23,9 +23,8 @@ module.exports = {
 
     await ticket.set("submitted", false);
 
-    channel.send(
+    message.channel.send(
       `**Is this an exam, assignment or homework sheet?** Include the subject as well.`
     );
-    ticket = null;
   },
 };
