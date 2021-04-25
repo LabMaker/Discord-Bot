@@ -1,5 +1,6 @@
 const Keyv = require("keyv");
 const Discord = require("discord.js");
+
 module.exports = {
   name: "view",
   description: "Shows ticket Status",
@@ -7,7 +8,7 @@ module.exports = {
     if (!args[0]) return message.channel.send("Usage: !ticket <@ID>");
 
     ticketID = message.channel.name.substr(8);
-    const ticket = new Keyv("mysql://root:@localhost:3306/discord_bot", {
+    const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
 

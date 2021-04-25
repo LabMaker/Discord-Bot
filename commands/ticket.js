@@ -1,12 +1,13 @@
 const Keyv = require("keyv");
 const Discord = require("discord.js");
+require("dotenv").config();
 
 module.exports = {
   name: "ticket",
   description: "Handles new Ticket",
   async execute(message, client) {
     ticketID = message.channel.name.substr(8);
-    const ticket = new Keyv("mysql://root:@localhost:3306/discord_bot", {
+    const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
 
