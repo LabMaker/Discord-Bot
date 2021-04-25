@@ -65,7 +65,7 @@ module.exports = {
       message.channel.send(
         `**Your Ticket has been submitted!** A helper will be with you shortly.`
       );
-      //sendLog(client, ticketEmbed);
+      sendLog(client, ticketEmbed);
     }
   },
 };
