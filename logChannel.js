@@ -2,11 +2,8 @@ require("dotenv").config();
 
 module.exports = {
   sendLog(client, msg) {
-    // const serverID = "826449038727184404";
-    // const channelID = "835467376467116053";
-
-    const serverID = "835683696240623617";
-    const channelID = "835683696698589185";
+    const serverID = "826449038727184404";
+    const channelID = "835467376467116053";
 
     client.guilds
       .fetch(serverID)
