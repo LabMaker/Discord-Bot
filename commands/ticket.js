@@ -1,5 +1,6 @@
 const Keyv = require("keyv");
 const Discord = require("discord.js");
+const { sendLog } = require("./../logChannel.js");
 require("dotenv").config();
 
 module.exports = {
@@ -7,7 +8,6 @@ module.exports = {
   description: "Handles new Ticket",
   async execute(message, client) {
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
-    console.log(ticketID);
 
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
@@ -63,16 +63,7 @@ module.exports = {
         `Your Ticket has been submitted a helper should be with you shortly`
       );
 
-      client.guilds
-        .fetch("826449038727184404")
-        .then(async (guild) => {
-          logChannel = guild.channels.cache.get("835467376467116053");
-          if (logChannel)
-            setTimeout(() => {
-              logChannel.send(ticketEmbed);
-            }, 1500);
-        })
-        .catch(console.error);
+      sendLog(client, ticketEmbed);
     }
   },
 };

@@ -1,10 +1,10 @@
 require("dotenv").config();
-const { Console } = require("console");
 const Discord = require("discord.js");
 const fs = require("fs");
 const Keyv = require("keyv");
 const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
+const { sendLog } = require("./logChannel.js");
 
 client.commands = new Discord.Collection();
 const commandFiles = fs
@@ -56,19 +56,10 @@ client.on("channelCreate", (channel) => {
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
   ticketID = channel.name.toLowerCase().replace("ticket-", "");
 
-  client.guilds
-    .fetch("826449038727184404")
-    .then((guild) => {
-      logChannel = guild.channels.cache.get("835467376467116053");
-      if (logChannel) {
-        setTimeout(() => {
-          logChannel.send(
-            `A Ticket Was Created by with ID ${ticketID} <@342052641146142734>`
-          );
-        }, 1500);
-      }
-    })
-    .catch(console.error);
+  sendLog(
+    client,
+    `A Ticket Was Created by with ID ${ticketID} <@342052641146142734>`
+  );
 
   setTimeout(async () => {
     channel.send(
@@ -101,11 +92,7 @@ client.on("inviteCreate", (invite) => {
         return;
       }
 
-      logChannel = guild.channels.cache.get("835467376467116053");
-      if (logChannel)
-        setTimeout(() => {
-          logChannel.send(`An Invite Was Created by ${invite.inviter}`);
-        }, 1500);
+      sendLog(client, `An Invite Was Created by ${invite.inviter}`);
     })
     .catch(console.error);
 });
