@@ -5,6 +5,13 @@ module.exports = {
   name: "ticket",
   description: "Handles new Ticket",
   async execute(message, client) {
+    if (
+      message.channel.parent == null ||
+      message.channel.parent.name != "Open Orders"
+    ) {
+      return;
+    }
+
     const Keyv = require("keyv");
     const Discord = require("discord.js");
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");

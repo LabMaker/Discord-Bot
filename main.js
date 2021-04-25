@@ -54,12 +54,16 @@ client.on("message", (message) => {
 client.on("channelCreate", (channel) => {
   let x = channel.guild.me.joinedTimestamp / 1000;
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
-  ticketID = channel.name.toLowerCase().replace("ticket-", "");
 
-  sendLog(
+  if (channel.parent == null || channel.parent.name != "Open Orders") {
+    return;
+  }
+
+  ticketID = channel.name.toLowerCase().replace("ticket-", "");
+  /*sendLog(
     client,
     `A Ticket Was Created by with ID ${ticketID} <@342052641146142734>`
-  );
+  ); */
 
   setTimeout(async () => {
     channel.send(
