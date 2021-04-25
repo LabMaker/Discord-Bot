@@ -26,16 +26,16 @@ module.exports = {
     if (type == undefined) {
       await ticket.set("type", message.content);
       message.channel.send(
-        `What Date & Time is the ${message.content} (Include Timezone)`
+        `**What date & time is the ${message.content}?** (Include Timezone)`
       );
     } else if (time == undefined) {
       await ticket.set("time", message.content);
       message.channel.send(
-        `What Level of Education is this Including Year (University/College)`
+        `**What level of education is this including year?** (University/College)`
       );
     } else if (level == undefined) {
       await ticket.set("level", message.content);
-      message.channel.send(`What is your budget?`);
+      message.channel.send(`**What is your budget?**`);
     } else if (budget == undefined) {
       await ticket.set("budget", message.content);
       const ticketEmbed = new Discord.MessageEmbed()
@@ -58,9 +58,10 @@ module.exports = {
         .setThumbnail("https://i.imgur.com/gPYO6A1.gif")
         .setTimestamp();
       await ticket.set("submitted", true);
+
       message.channel.send(ticketEmbed);
       message.channel.send(
-        `Your Ticket has been submitted a helper should be with you shortly`
+        `**Your Ticket has been submitted!** A helper will be with you shortly.`
       );
 
       sendLog(client, ticketEmbed);

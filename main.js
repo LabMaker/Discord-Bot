@@ -63,7 +63,7 @@ client.on("channelCreate", (channel) => {
 
   setTimeout(async () => {
     channel.send(
-      `Welcome, Im going to need some more information before i can find you a tutor. (Enter !stop ${ticketID} at Anytime to cancel).`
+      `Welcome! I'm going to need some more information before I can find you a suitable tutor. (Enter !stop ${ticketID} at Anytime to cancel).`
     );
 
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
@@ -73,7 +73,7 @@ client.on("channelCreate", (channel) => {
     await ticket.set("submitted", false);
 
     channel.send(
-      `Is This an Exam, Assignment or Homeworksheet? Include the subject aswell.`
+      `**Is this an exam, assignment or homework sheet?** Include the subject as well.`
     );
   }, 1500);
 });
