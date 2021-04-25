@@ -56,22 +56,23 @@ client.on("channelCreate", (channel) => {
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
   ticketID = channel.name.toLowerCase().replace("ticket-", "");
 
-  sendLog(
+  /*sendLog(
     client,
     `A Ticket Was Created by with ID ${ticketID} <@342052641146142734>`
-  );
+  ); */
 
   setTimeout(async () => {
     channel.send(
       `Welcome! I'm going to need some more information before I can find you a suitable tutor. (Enter !stop ${ticketID} at Anytime to cancel).`
     );
 
-    const ticket = new Keyv(process.env.DB_CONN_STRING, {
+    let ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
 
     await ticket.set("submitted", false);
 
+    ticket = null;
     channel.send(
       `**Is this an exam, assignment or homework sheet?** Include the subject as well.`
     );

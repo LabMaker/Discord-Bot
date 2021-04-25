@@ -1,5 +1,3 @@
-const Keyv = require("keyv");
-const Discord = require("discord.js");
 const { sendLog } = require("./../utils/logChannel.js");
 require("dotenv").config();
 
@@ -7,9 +5,11 @@ module.exports = {
   name: "ticket",
   description: "Handles new Ticket",
   async execute(message, client) {
+    const Keyv = require("keyv");
+    const Discord = require("discord.js");
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
 
-    const ticket = new Keyv(process.env.DB_CONN_STRING, {
+    let ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
 
@@ -65,8 +65,7 @@ module.exports = {
       message.channel.send(
         `**Your Ticket has been submitted!** A helper will be with you shortly.`
       );
-
-      sendLog(client, ticketEmbed);
+      //sendLog(client, ticketEmbed);
     }
   },
 };
