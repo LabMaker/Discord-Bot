@@ -30,6 +30,15 @@ client.on("message", (message) => {
     message.delete();
   } */
 
+  if (message.channel.id == "835467376467116053" && !message.author.bot) {
+    message.delete();
+    message
+      .reply("This is a log channel please use the main channel")
+      .then((msg) => {
+        msg.delete(5000);
+      });
+  }
+
   if (!message.content.startsWith(process.env.prefix) || message.author.bot) {
     if (message.author.bot) {
       return;
