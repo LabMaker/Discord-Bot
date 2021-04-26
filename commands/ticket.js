@@ -53,7 +53,7 @@ module.exports = {
         .setAuthor(
           `${message.member.user.username}#${message.member.user.discriminator} - Ticket ${ticketID}`,
           `${message.member.user.displayAvatarURL({
-            format: "gif",
+            format: "png",
             dynamic: true,
           })}`,
           message.url
