@@ -26,6 +26,10 @@ client.once("ready", () => {
 });
 
 client.on("message", (message) => {
+  /*if (message.author.id == "830423278015217714") {
+    message.delete();
+  } */
+
   if (!message.content.startsWith(process.env.prefix) || message.author.bot) {
     if (message.author.bot) {
       return;
