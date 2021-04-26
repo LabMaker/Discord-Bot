@@ -35,8 +35,9 @@ client.on("message", (message) => {
     message
       .reply("This is a log channel please use the main channel")
       .then((msg) => {
-        msg.delete(5000);
+        msg.delete({ timeout: 5000 });
       });
+    return;
   }
 
   if (!message.content.startsWith(process.env.prefix) || message.author.bot) {
