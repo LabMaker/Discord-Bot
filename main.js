@@ -44,6 +44,7 @@ client.on("message", (message) => {
     if (message.author.bot) {
       return;
     }
+
     const ticCommand = client.commands.get("ticket");
     ticCommand.execute(message, client);
     //command.execute("ticket");
@@ -54,6 +55,14 @@ client.on("message", (message) => {
   const commandName = args.shift().toLowerCase();
   //const id = client.guilds.get("GUILD-ID");
 
+  if (commandName == "restart") {
+    message.channel
+      .send("Restarting...")
+      .then((msg) => client.destroy())
+      .then(() => client.login(process.env.token));
+
+    return;
+  }
   if (!client.commands.has(commandName)) return;
 
   const command = client.commands.get(commandName);
