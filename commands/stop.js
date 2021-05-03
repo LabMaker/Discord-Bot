@@ -19,7 +19,7 @@ module.exports = {
     await ticket.set("submitted", true);
 
     message.channel.send(
-      `Stopped Ticket Creation. If you would like to restart type !start ${ticketID}`
+      `Stopped Ticket Creation. If you would like to restart type !start`
     );
   },
 };

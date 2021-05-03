@@ -90,7 +90,7 @@ client.on("channelCreate", (channel) => {
 
   setTimeout(async () => {
     channel.send(
-      `Welcome! I'm going to need some more information before I can find you a suitable tutor. (Enter !stop ${ticketID} at Anytime to cancel).`
+      `Welcome! I'm going to need some more information before I can find you a suitable tutor. (Enter !stop at Anytime to cancel).`
     );
 
     let ticket = new Keyv(process.env.DB_CONN_STRING, {

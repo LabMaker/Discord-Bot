@@ -19,7 +19,7 @@ module.exports = {
     await ticket.clear();
 
     message.channel.send(
-      `Started New Ticket, if you would like to stop the ticket use !stop ${ticketID}`
+      `Started New Ticket, if you would like to stop the ticket use !stop`
     );
 
     await ticket.set("submitted", false);
