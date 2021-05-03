@@ -10,7 +10,7 @@ module.exports = {
       namespace: ticketID,
     });
 
-    if (!Number.isInteger(ticketID)) {
+    if (Number(ticketID) == NaN) {
       return message.channel.send(`Ticket doesnt exist ${message.member}`);
     }
 
