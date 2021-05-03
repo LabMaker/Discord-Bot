@@ -4,11 +4,12 @@ module.exports = {
   name: "start",
   description: "Starts the ticket again",
   async execute(message, args) {
-    if (!args[0]) return message.channel.send("Usage: !stop <@Ticket Id>");
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
 
-    if (args[0] != ticketID) {
-      return message.channel.send(`Ticket ID not created by ${message.member}`);
+    if (!Number.isInteger(ticketID)) {
+      return message.channel.send(
+        `Tickets can only be created in ticket category ${message.member}`
+      );
     }
 
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
