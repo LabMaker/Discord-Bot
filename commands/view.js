@@ -5,12 +5,14 @@ module.exports = {
   name: "view",
   description: "Shows ticket Status",
   async execute(message, args) {
-    if (!args[0]) return message.channel.send("Usage: !ticket <@ID>");
-
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
     });
+
+    if (!Number.isInteger(ticketID)) {
+      return message.channel.send(`Ticket doesnt exist ${message.member}`);
+    }
 
     const submitted = await ticket.get("submitted");
     const type = await ticket.get("type");
