@@ -15,7 +15,7 @@ module.exports = {
     } else if (methodType == "eth") {
       message.channel.send(`ETH: 0xB8118058a4d024086A05C582c479E58E4b8B797a`);
     } else if (methodType == "btc") {
-      message.channel.send(`BTC: 3MjuZrWkWRzjehyEf7HUT8cUQTjXLJYiJ3`);
+      message.channel.send(`BTC: 3N2ZSeiDi3zjHmjNqL9muHviKMGMZs6F8g`);
     } else if (methodType == "paypal") {
       message.channel.send(
         `Paypal is only available to our verified customers as alot of new customers end up chargebacking after receiving the work`
