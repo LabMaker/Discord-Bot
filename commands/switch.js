@@ -15,9 +15,9 @@ module.exports = {
     }
     const customMessage = `${user.username}#${user.discriminator} Add me on Discord`;
 
-    axios.post("https://reddit-api-bot.herokuapp.com/bot/updateMessage", {
+    /*axios.post("https://reddit-api-bot.herokuapp.com/bot/updateMessage", {
       pmBody: customMessage,
-    });
+    }); */
     message.channel.send(
       `Changed Config To "${customMessage} Add me on Discord"`
     );
