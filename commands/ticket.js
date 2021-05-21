@@ -64,7 +64,7 @@ module.exports = {
           { name: "Budget", value: message.content, inline: true }
         )
         .setFooter("Submitted")
-        .setThumbnail("https://i.imgur.com/N34urn4.gif")
+        .setThumbnail("https://i.imgur.com/3Ijjqcx.gif")
         .setTimestamp();
       await ticket.set("submitted", true);
 

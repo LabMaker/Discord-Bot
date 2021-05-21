@@ -3,9 +3,11 @@ module.exports = {
   name: "switch",
   description: "Switch Message",
   execute(message, args) {
-    if (!args[0]) return message.channel.send("Usage: !switch <@User>");
-
     user = message.mentions.users.first();
+
+    if (!args[0]) {
+      user = message.author;
+    }
 
     //ID was provided
     if (!user) {
@@ -15,9 +17,10 @@ module.exports = {
     }
     const customMessage = `${user.username}#${user.discriminator} Add me on Discord`;
 
-    axios.post("https://reddit-api-bot.herokuapp.com/bot/updateMessage", {
+    /*axios.post("https://reddit-api-bot.herokuapp.com/bot/updateMessage", {
       pmBody: customMessage,
-    });
+    }); */
+
     message.channel.send(
       `Changed Config To "${customMessage} Add me on Discord"`
     );
