@@ -1,4 +1,5 @@
 const axios = require("axios");
+require("dotenv").config();
 module.exports = {
   name: "switch",
   description: "Switch Message",
@@ -17,9 +18,11 @@ module.exports = {
     }
     const customMessage = `${user.username}#${user.discriminator} Add me on Discord`;
 
-    /*axios.post("https://reddit-api-bot.herokuapp.com/bot/updateMessage", {
+    postURI = process.env.API_URL + "/bot/updateMessage";
+
+    axios.post(postURI, {
       pmBody: customMessage,
-    }); */
+    });
 
     message.channel.send(
       `Changed Config To "${customMessage} Add me on Discord"`
