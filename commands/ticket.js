@@ -12,6 +12,13 @@ module.exports = {
       return;
     }
 
+    // If message was by an admin, don't count as message
+    // answering ticket question and just return.
+    let roles = message.member.roles.cache;
+    if (roles.find((r) => r.name === "Admin") || roles.find((r) => r.name === "Helper")) {
+      return;
+    }
+
     const Keyv = require("keyv");
     const Discord = require("discord.js");
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
