@@ -19,10 +19,9 @@ for (const file of commandFiles) {
 keyv.on("error", (err) => console.log("Connection Error", err));
 
 client.once("ready", () => {
-  console.log("Work Connect is Online!");
-  /*client.user.setPresence({ activity: { name: '' }, status: 'invisible' })
-        .then(console.log)
-        .catch(console.error); */
+  console.log("Bot is Online!");
+
+  client.user.setPresence({ activity: { name: "Helping Get Work Done", type: "PLAYING" }, status: "online" });
 });
 
 client.on("message", (message) => {
