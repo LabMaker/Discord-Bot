@@ -7,9 +7,7 @@ const client = new Discord.Client();
 const { sendLog } = require("./utils/logChannel.js");
 
 client.commands = new Discord.Collection();
-const commandFiles = fs
-  .readdirSync("./commands/")
-  .filter((file) => file.endsWith("js"));
+const commandFiles = fs.readdirSync("./commands/").filter((file) => file.endsWith("js"));
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -32,11 +30,9 @@ client.on("message", (message) => {
 
   if (message.channel.id == "835467376467116053" && !message.author.bot) {
     message.delete();
-    message
-      .reply("This is a log channel please use the main channel")
-      .then((msg) => {
-        msg.delete({ timeout: 5000 });
-      });
+    message.reply("This is a log channel please use the main channel").then((msg) => {
+      msg.delete({ timeout: 5000 });
+    });
     return;
   }
 
@@ -78,7 +74,7 @@ client.on("channelCreate", (channel) => {
   let x = channel.guild.me.joinedTimestamp / 1000;
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
 
-  if (channel.parent == null || channel.parent.name != "Open Orders") {
+  if (channel.parent == null || channel.parent.name.toLowerCase() != "open orders") {
     return;
   }
 
@@ -94,15 +90,13 @@ client.on("channelCreate", (channel) => {
     );
 
     let ticket = new Keyv(process.env.DB_CONN_STRING, {
-      namespace: ticketID,
+      namespace: ticketID
     });
 
     await ticket.set("submitted", false);
 
     ticket = null;
-    channel.send(
-      `**Is this an exam, assignment or homework sheet?** Include the subject as well.`
-    );
+    channel.send(`**Is this an exam, assignment or homework sheet?**`);
   }, 1500);
 });
 
@@ -110,10 +104,7 @@ client.on("inviteCreate", async (invite) => {
   await invite.guild.fetch();
   let member = await invite.guild.members.fetch(invite.inviter.id);
 
-  if (
-    member.roles.cache.find((r) => r.name === "Admin") ||
-    member.roles.cache.find((r) => r.name === "Helper")
-  ) {
+  if (member.roles.cache.find((r) => r.name === "Admin") || member.roles.cache.find((r) => r.name === "Helper")) {
     console.log("Invite Creater has Admin/Helper Role");
     return;
   }
