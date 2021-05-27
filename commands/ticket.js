@@ -5,14 +5,20 @@ module.exports = {
   name: "ticket",
   description: "Handles new Ticket",
   async execute(message, client) {
-    if (message.channel.parent == null || message.channel.parent.name.toLowerCase() != "open orders") {
+    if (
+      message.channel.parent == null ||
+      message.channel.parent.name.toLowerCase() != "open orders"
+    ) {
       return;
     }
 
     // If message was by an admin, don't count as message
     // answering ticket question and just return.
     let roles = message.member.roles.cache;
-    if (roles.find((r) => r.name === "Admin") || roles.find((r) => r.name === "Helper")) {
+    if (
+      roles.find((r) => r.name === "Admin") ||
+      roles.find((r) => r.name === "Helper")
+    ) {
       return;
     }
 
@@ -21,7 +27,7 @@ module.exports = {
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
 
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
-      namespace: ticketID
+      namespace: ticketID,
     });
 
     const submitted = await ticket.get("submitted");
@@ -43,13 +49,19 @@ module.exports = {
       message.channel.send(`**What subject is the ${message.content}?**`);
     } else if (subject == undefined) {
       await ticket.set("subject", message.content);
-      message.channel.send(`**What date & time is the ${message.content}?** (Include Timezone)`);
+      message.channel.send(
+        `**What date & time is the ${message.content}?** (Include Timezone)`
+      );
     } else if (time == undefined) {
       await ticket.set("time", message.content);
-      message.channel.send(`**What level of education is this including year?** (University/College)`);
+      message.channel.send(
+        `**What level of education is this including year?** (University/College)`
+      );
     } else if (level == undefined) {
       await ticket.set("level", message.content);
-      message.channel.send(`**What is your budget?** (Include currency if isn't \`£ for GBP\` or \`$ for USD\`)`);
+      message.channel.send(
+        `**What is your budget?** (Include currency if isn't \`£ for GBP\` or \`$ for USD\`)`
+      );
     } else if (budget == undefined) {
       await ticket.set("budget", message.content);
       const ticketEmbed = new Discord.MessageEmbed()
@@ -59,7 +71,7 @@ module.exports = {
           `${message.member.user.username}#${message.member.user.discriminator} - Ticket ${ticketID}`,
           `${message.member.user.displayAvatarURL({
             format: "png",
-            dynamic: true
+            dynamic: true,
           })}`,
           message.url
         )
@@ -74,8 +86,10 @@ module.exports = {
       await ticket.set("submitted", true);
 
       message.channel.send(ticketEmbed);
-      message.channel.send(`**Your Ticket has been submitted!** A helper will be with you shortly.`);
+      message.channel.send(
+        `**Your Ticket has been submitted!** A helper will be with you shortly.`
+      );
       sendLog(client, ticketEmbed);
     }
-  }
+  },
 };
