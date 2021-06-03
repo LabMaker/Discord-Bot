@@ -21,11 +21,9 @@ module.exports = {
     postURI = process.env.API_SITE + "bot/updateMessage";
 
     axios.post(postURI, {
-      pmBody: customMessage,
+      pmBody: customMessage
     });
 
-    message.channel.send(
-      `Changed Config To "${customMessage} Add me on Discord"`
-    );
-  },
+    message.channel.send(`Changed Config To "${customMessage}"`);
+  }
 };
