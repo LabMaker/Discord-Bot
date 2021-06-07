@@ -24,8 +24,6 @@ module.exports = {
       pmBody: customMessage,
     });
 
-    message.channel.send(
-      `Changed Config To "${customMessage} Add me on Discord"`
-    );
+    message.channel.send(`Reach me out on discord which is " ${customMessage}`);
   },
 };
