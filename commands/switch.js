@@ -18,7 +18,7 @@ module.exports = {
     }
     const customMessage = `${user.username}#${user.discriminator} Add me on Discord`;
 
-    // postURI = process.env.API_SITE + "bot/updateMessage";
+    postURI = process.env.API_SITE + "bot/updateMessage";
 
     axios.post(postURI, {
       pmBody: customMessage,
