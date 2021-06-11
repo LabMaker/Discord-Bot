@@ -16,7 +16,7 @@ module.exports = {
       vf = user.id;
       console.log(user);
     }
-    const customMessage = `${user.username}#${user.discriminator} Add me on Discord`;
+    const customMessage = `Reach me out on discord which is ${user.username}#${user.discriminator} Add me ill respond ASAP.`;
 
     postURI = process.env.API_SITE + "bot/updateMessage";
 
@@ -24,6 +24,6 @@ module.exports = {
       pmBody: customMessage,
     });
 
-    message.channel.send(`Reach me out on discord which is ${customMessage}`);
+    message.channel.send(customMessage);
   },
 };
