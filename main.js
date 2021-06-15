@@ -5,7 +5,7 @@ const Keyv = require("keyv");
 const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
 const { sendLog } = require("./utils/logChannel.js");
-
+let ticketNum = process.env.TICKET_NUM;
 client.commands = new Discord.Collection();
 const commandFiles = fs
   .readdirSync("./commands/")
@@ -73,6 +73,20 @@ client.on("message", (message) => {
     message.reply("there was an error trying to execute that command!");
   }
 });
+
+// client.on("guildMemberAdd", (member) => {
+//   member.guild.channels.create(`Ticket-${ticketNum}`, {
+//     type: "text",
+//     permissionOverwrites: [
+//       {
+//         id: member.id,
+//         parent: "818879990774628374",
+//         deny: ["VIEW_CHANNEL"],
+//       },
+//     ],
+//   });
+//   ticketNum++;
+// });
 
 client.on("presenceUpdate2", (oldPresence, newPresence) => {
   let member = newPresence.member;
