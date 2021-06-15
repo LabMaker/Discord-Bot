@@ -74,19 +74,36 @@ client.on("message", (message) => {
   }
 });
 
-// client.on("guildMemberAdd", (member) => {
-//   member.guild.channels.create(`Ticket-${ticketNum}`, {
-//     type: "text",
-//     permissionOverwrites: [
-//       {
-//         id: member.id,
-//         parent: "818879990774628374",
-//         deny: ["VIEW_CHANNEL"],
-//       },
-//     ],
-//   });
-//   ticketNum++;
-// });
+client.on("guildMemberAdd", (member) => {
+  member.guild.fetch();
+  guild = member.guild;
+  const everyoneRole = guild.roles.everyone;
+  const helperRole = guild.roles.cache.find((role) => {
+    return role.name === "Helper";
+  });
+
+  guild.channels
+    .create(`Ticket-0${ticketNum}`, {
+      type: "text",
+      parent: "818879990774628374",
+      permissionOverwrites: [
+        { id: everyoneRole, deny: ["VIEW_CHANNEL"] },
+        { id: member.id, allow: ["VIEW_CHANNEL"] },
+        { id: helperRole, allow: ["VIEW_CHANNEL"] },
+      ],
+    })
+    .then((channel) => {
+      channel.send(`<@${member.id}> Welcome`);
+      const ticketEmbed = new Discord.MessageEmbed()
+        .setColor("#10F9AB")
+        .setDescription(
+          `A Support member will be with you shortly, please answer the questions below. `
+        )
+        .setFooter("Task Place Ticket Tool");
+      channel.send(ticketEmbed);
+    });
+  ticketNum++;
+});
 
 client.on("presenceUpdate2", (oldPresence, newPresence) => {
   let member = newPresence.member;
