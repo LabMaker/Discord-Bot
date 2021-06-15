@@ -74,7 +74,7 @@ client.on("message", (message) => {
   }
 });
 
-client.on("presenceUpdate", (oldPresence, newPresence) => {
+client.on("presenceUpdate2", (oldPresence, newPresence) => {
   let member = newPresence.member;
   // User id of the user you're tracking status.
 
