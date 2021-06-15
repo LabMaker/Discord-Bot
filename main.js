@@ -5,13 +5,6 @@ const Keyv = require("keyv");
 const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
 const { sendLog } = require("./utils/logChannel.js");
-var cron = require("cron");
-
-function test() {
-  client.channels
-    .fetch("853687787333353493")
-    .then((channel) => channel.send("!d bump"));
-}
 
 client.commands = new Discord.Collection();
 const commandFiles = fs
@@ -26,12 +19,6 @@ for (const file of commandFiles) {
 keyv.on("error", (err) => console.log("Connection Error", err));
 
 client.once("ready", () => {
-  let job1 = new cron.CronJob("0 5 */2 * * *", test); // fires every day, at 01:05:01 and 13:05:01
-
-  job1.start();
-  test();
-  console.log("Bot is Online!");
-
   client.user.setPresence({
     activity: { name: "Helping Get Work Done", type: "PLAYING" },
     status: "online",
@@ -85,6 +72,60 @@ client.on("message", (message) => {
     console.error(error);
     message.reply("there was an error trying to execute that command!");
   }
+});
+
+client.on("presenceUpdate", (oldPresence, newPresence) => {
+  let member = newPresence.member;
+  // User id of the user you're tracking status.
+
+  if (newPresence.guild.id != "826449038727184404") {
+    return;
+  }
+
+  //Check if not Dias || Tarmac
+  if (
+    newPresence.member.id != 827212859447705610 &&
+    newPresence.member.id != 818867515157381140
+  ) {
+    return;
+  }
+
+  const tarmac = client.users.cache.find((u) => u.id === "827212859447705610");
+  const dias = client.users.cache.find((u) => u.id === "818867515157381140");
+
+  const tarmacStatus = tarmac.presence.status;
+  const diasStatus = dias.presence.status;
+
+  let messageDiscrim = "";
+  let switchedUserID = "";
+
+  if (tarmacStatus == "online" && diasStatus == "online") {
+    return;
+  }
+
+  if (
+    (tarmacStatus == "offline" || tarmacStatus == "idle") &&
+    (diasStatus == "offline" || diasStatus == "idle")
+  ) {
+    return;
+  } else if (tarmacStatus == "offline" || tarmacStatus == "idle") {
+    messageDiscrim = `${dias.username}#${dias.discriminator}`;
+    switchedUser = dias.id;
+  } else if (diasStatus == "offline" || diasStatus == "idle") {
+    messageDiscrim = `${tarmac.username}#${tarmac.discriminator}`;
+    switchedUser = tarmac.id;
+  }
+
+  const customMessage = `Reach me out on discord which is ${messageDiscrim} Add me ill respond ASAP.`;
+
+  postURI = process.env.API_SITE + "bot/updateMessage";
+
+  axios.post(postURI, {
+    pmBody: customMessage,
+  });
+  client.channels
+    .fetch("853967623673872385")
+    .then((channel) => channel.send(`Switched to <@${switchedUser}>`));
 });
 
 client.on("channelCreate", (channel) => {
