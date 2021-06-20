@@ -74,7 +74,7 @@ client.on("message", (message) => {
   }
 });
 
-client.on("guildMemberAdd2", (member) => {
+client.on("guildMemberAdd", (member) => {
   member.guild.fetch();
   guild = member.guild;
   const everyoneRole = guild.roles.everyone;
