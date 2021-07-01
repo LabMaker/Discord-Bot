@@ -23,6 +23,7 @@ client.once("ready", () => {
     activity: { name: "Helping Get Work Done", type: "PLAYING" },
     status: "online",
   });
+  console.log("Started");
 });
 
 client.on("message", (message) => {

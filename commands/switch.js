@@ -17,7 +17,7 @@ module.exports = {
       console.log(user);
     }
 
-    const customMessage = ` Hello! Send me a friend request on ${user.username}#${user.discriminator} on discord. I can help you out with your work.`;
+    const customMessage = `Hello, I am happy to help you out with your work! Send me a friend request at ${user.username}#${user.discriminator} and i can help you get your work done.`;
 
     postURI = process.env.API_SITE + "bot/updateMessage";
 
