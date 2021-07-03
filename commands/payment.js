@@ -1,19 +1,14 @@
+const { MessageButton } = require("discord-buttons");
 module.exports = {
   name: "pay",
   description: "Sends Payment",
   async execute(message, args) {
-    if (!args[0]) return message.channel.send("Usage: !pay <PaymentMethod>");
-    methodType = args[0].toLowerCase();
-    let button = new disbut.MessageButton()
-      .setStyle("red") //default: blurple
-      .setLabel("My First Button!") //default: NO_LABEL_PROVIDED
-      .setID("click_to_function") //note: if you use the style "url" you must provide url using .setURL('https://example.com')
-      .setDisabled(); //disables the button | default: false
+    if (!args[0]) {
+      return constructMessage(message);
+    }
 
-    message.channel.send(
-      "Hey, i am powered by https://npmjs.com/discord-buttons",
-      button
-    );
+    methodType = args[0].toLowerCase();
+
     if (methodType == "cashapp") {
       message.channel.send(`Cashapp is currently unavailable`);
     } else if (methodType == "crypto") {
@@ -34,9 +29,28 @@ module.exports = {
         `Paypal is only available to our verified customers as alot of new customers end up chargebacking after receiving the work`
       );
     } else {
-      message.channel.send(
-        `Your payment method is currently not supported. We will look into it and try to support it`
-      );
+      constructMessage(message);
     }
   },
 };
+
+function constructMessage(message) {
+  let cryptoButton = new MessageButton()
+    .setStyle("green")
+    .setLabel("Crypto")
+    .setID("crypto");
+
+  let venmoButton = new MessageButton()
+    .setStyle("blurple")
+    .setLabel("Venmo")
+    .setID("venmo");
+
+  let zelleButton = new MessageButton()
+    .setStyle("red")
+    .setLabel("Zelle")
+    .setID("zelle");
+
+  message.channel.send("Our Payment Methods", {
+    buttons: [cryptoButton, venmoButton, zelleButton],
+  });
+}

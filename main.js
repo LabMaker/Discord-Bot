@@ -1,9 +1,12 @@
 require("dotenv").config();
+
 const Discord = require("discord.js");
 const fs = require("fs");
 const Keyv = require("keyv");
 const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
+require("discord-buttons")(client);
+const { MessageButton } = require("discord-buttons");
 const { sendLog } = require("./utils/logChannel.js");
 let ticketNum = process.env.TICKET_NUM;
 client.commands = new Discord.Collection();
@@ -206,6 +209,68 @@ client.on("inviteCreate", async (invite) => {
   }
 
   sendLog(client, `An Invite Was Created by ${invite.inviter}`);
+});
+
+client.on("clickButton", async (button) => {
+  if (button.id === "crypto") {
+    let ethButton = new MessageButton()
+      .setStyle("blurple")
+      .setLabel("ETH")
+      .setID("eth");
+
+    let btcAddress = new MessageButton()
+      .setStyle("red")
+      .setLabel("BTC")
+      .setID("btc");
+
+    let ltcAddress = new MessageButton()
+      .setStyle("blurple")
+      .setLabel("LTC")
+      .setID("ltc");
+
+    let backButton = new MessageButton()
+      .setStyle("gray")
+      .setLabel("<")
+      .setID("back");
+    button.message.delete();
+
+    button.channel.send("Our Crypto Methods", {
+      buttons: [ethButton, btcAddress, ltcAddress, backButton],
+    });
+  } else if (button.id === "venmo") {
+    button.channel.send("@Likhita-Yegireddi");
+  } else if (button.id === "zelle") {
+    button.channel.send("yegireddilikhita@gmail.com");
+  } else if (button.id === "eth") {
+    button.channel.send(`ETH: 0xCb3fA82D02751Db19ca9F891D99225FD70bb9c26`);
+  } else if (button.id === "btc") {
+    button.channel.send(`BTC: 3BomLGxJbTKJ648hkWzHA9MX6vgfhPX3A9`);
+  } else if (button.id === "ltc") {
+    button.channel.send(`LTC: MFn7mwJXkCGUVDxKRsLX1f8XSe2hrt916W`);
+  } else if (button.id === "back") {
+    let cryptoButton = new MessageButton()
+      .setStyle("green")
+      .setLabel("Crypto")
+      .setID("crypto");
+
+    let venmoButton = new MessageButton()
+      .setStyle("blurple")
+      .setLabel("Venmo")
+      .setID("venmo");
+
+    let zelleButton = new MessageButton()
+      .setStyle("red")
+      .setLabel("Zelle")
+      .setID("zelle");
+
+    button.message.delete();
+
+    button.channel.send("Our Payment Methods", {
+      buttons: [cryptoButton, venmoButton, zelleButton],
+    });
+  }
+
+  button.defer();
 });
 
 client.login(process.env.token);
