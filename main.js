@@ -238,7 +238,7 @@ client.on("clickButton", async (button) => {
       buttons: [ethButton, btcAddress, ltcAddress, backButton],
     });
   } else if (button.id === "venmo") {
-    button.channel.send("@Likhita-Yegireddi");
+    button.channel.send("@assignmenthelper");
   } else if (button.id === "zelle") {
     button.channel.send("yegireddilikhita@gmail.com");
   } else if (button.id === "eth") {
@@ -270,7 +270,7 @@ client.on("clickButton", async (button) => {
     });
   }
 
-  button.defer();
+  button.reply.defer();
 });
 
 client.login(process.env.token);
