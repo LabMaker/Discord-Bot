@@ -37,7 +37,7 @@ module.exports = {
         { name: "Budget", value: budget, inline: true }
       )
       .setFooter("Submitted")
-      .setThumbnail("https://i.imgur.com/3Ijjqcx.gif")
+      .setThumbnail("https://i.imgur.com/E7PB9cr.gif")
       .setTimestamp();
     message.channel.send(ticketEmbed);
   },
