@@ -30,11 +30,7 @@ client.once("ready", () => {
 });
 
 client.on("message", (message) => {
-  /*if (message.author.id == "830423278015217714") {
-    message.delete();
-  } */
-
-  if (message.channel.id == "835467376467116053" && !message.author.bot) {
+  if (message.channel.id == "863424666052198410" && !message.author.bot) {
     message.delete();
     message
       .reply("This is a log channel please use the main channel")
@@ -67,6 +63,7 @@ client.on("message", (message) => {
 
     return;
   }
+
   if (!client.commands.has(commandName)) return;
 
   const command = client.commands.get(commandName);
@@ -167,10 +164,7 @@ client.on("channelCreate", (channel) => {
   let x = channel.guild.me.joinedTimestamp / 1000;
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
 
-  if (
-    channel.parent == null ||
-    channel.parent.name.toLowerCase() != "open orders"
-  ) {
+  if (channel.parent.name.toLowerCase() != "open orders") {
     return;
   }
 
