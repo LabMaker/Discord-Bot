@@ -236,9 +236,9 @@ client.on("clickButton", async (button) => {
       buttons: [ethButton, btcAddress, ltcAddress, backButton],
     });
   } else if (button.id === "venmo") {
-    button.channel.send("@assignmenthelper");
+    button.channel.send("Venmo: @assignmenthelper");
   } else if (button.id === "zelle") {
-    button.channel.send("yegireddilikhita@gmail.com");
+    button.channel.send("Zelle: yegireddilikhita@gmail.com");
   } else if (button.id === "eth") {
     button.channel.send(`ETH: 0xCb3fA82D02751Db19ca9F891D99225FD70bb9c26`);
   } else if (button.id === "btc") {
