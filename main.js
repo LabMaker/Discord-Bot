@@ -210,6 +210,7 @@ client.on("inviteCreate", async (invite) => {
 });
 
 client.on("clickButton", async (button) => {
+  //Possible Rewrite adding this to the WebAPI (is this Unsafe? would have to encrypto data on API if we did this)
   if (button.id === "crypto") {
     let ethButton = new MessageButton()
       .setStyle("blurple")
