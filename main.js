@@ -30,6 +30,10 @@ client.once("ready", () => {
 });
 
 client.on("message", (message) => {
+  if (message.author.id === "830423278015217714" && false) {
+    message.react("🥱");
+  }
+
   if (message.channel.id == "863424666052198410" && !message.author.bot) {
     message.delete();
     message
@@ -241,7 +245,10 @@ client.on("clickButton", async (button) => {
     button.channel.send(`BTC: 3BomLGxJbTKJ648hkWzHA9MX6vgfhPX3A9`);
   } else if (button.id === "ltc") {
     button.channel.send(`LTC: MFn7mwJXkCGUVDxKRsLX1f8XSe2hrt916W`);
+  } else if (button.id === "cashapp") {
+    button.channel.send(`Cashapp: £JoeyLatzz`);
   } else if (button.id === "back") {
+    //Move to function in Utils as its used twice
     let cryptoButton = new MessageButton()
       .setStyle("green")
       .setLabel("Crypto")
@@ -257,10 +264,15 @@ client.on("clickButton", async (button) => {
       .setLabel("Zelle")
       .setID("zelle");
 
+    let cashappButton = new MessageButton()
+      .setStyle("green")
+      .setLabel("Cashapp")
+      .setID("cashapp");
+
     button.message.delete();
 
     button.channel.send("Our Payment Methods", {
-      buttons: [cryptoButton, venmoButton, zelleButton],
+      buttons: [cryptoButton, venmoButton, zelleButton, cashappButton],
     });
   }
 

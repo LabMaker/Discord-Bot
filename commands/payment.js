@@ -50,7 +50,12 @@ function constructMessage(message) {
     .setLabel("Zelle")
     .setID("zelle");
 
+  let cashappButton = new MessageButton()
+    .setStyle("green")
+    .setLabel("Cashapp")
+    .setID("cashapp");
+
   message.channel.send("Our Payment Methods", {
-    buttons: [cryptoButton, venmoButton, zelleButton],
+    buttons: [cryptoButton, venmoButton, zelleButton, cashappButton],
   });
 }
