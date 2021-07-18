@@ -7,8 +7,10 @@ const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
 require("discord-buttons")(client);
 const { MessageButton } = require("discord-buttons");
+const { GetConfig } = require("./utils/APIHelper.js");
 const { sendLog } = require("./utils/logChannel.js");
 let ticketNum = process.env.TICKET_NUM;
+let config = "";
 client.commands = new Discord.Collection();
 const commandFiles = fs
   .readdirSync("./commands/")
@@ -21,65 +23,79 @@ for (const file of commandFiles) {
 
 keyv.on("error", (err) => console.log("Connection Error", err));
 
-client.once("ready", () => {
-  client.user.setPresence({
-    activity: { name: "Helping Get Work Done", type: "PLAYING" },
-    status: "online",
+client.once("ready", async () => {
+  await GetConfig().then((data) => {
+    config = data;
+    client.user.setPresence({
+      activity: { name: config.activity, type: config.type },
+      status: config.status,
+    });
   });
   console.log("Started");
 });
 
-client.on("message", (message) => {
-  if (message.author.id === "830423278015217714" && false) {
-    message.react("🥱");
-  }
+client.on("message", async (message) => {
+  await GetConfig().then((data) => {
+    config = data;
+    if (message.author.id === "827212859447705610" && config.autoReact) {
+      message.react("🥱");
+    }
 
-  if (message.channel.id == "863424666052198410" && !message.author.bot) {
-    message.delete();
-    message
-      .reply("This is a log channel please use the main channel")
-      .then((msg) => {
-        msg.delete({ timeout: 5000 });
-      });
-    return;
-  }
-
-  if (!message.content.startsWith(process.env.prefix) || message.author.bot) {
-    if (message.author.bot) {
+    if (message.channel.id == "863424666052198410" && !message.author.bot) {
+      message.delete();
+      message
+        .reply("This is a log channel please use the main channel")
+        .then((msg) => {
+          msg.delete({ timeout: 5000 });
+        });
       return;
     }
 
-    const ticCommand = client.commands.get("ticket");
-    ticCommand.execute(message, client);
-    //command.execute("ticket");
-    return;
-  }
+    if (!message.content.startsWith(process.env.prefix) || message.author.bot) {
+      if (message.author.bot) {
+        return;
+      }
 
-  const args = message.content.slice(process.env.prefix.length).split(/ +/);
-  const commandName = args.shift().toLowerCase();
-  //const id = client.guilds.get("GUILD-ID");
+      const ticCommand = client.commands.get("ticket");
+      ticCommand.execute(message, client);
+      //command.execute("ticket");
+      return;
+    }
 
-  if (commandName == "restart") {
-    message.channel
-      .send("Restarting...")
-      .then((msg) => client.destroy())
-      .then(() => client.login(process.env.token));
+    const args = message.content.slice(process.env.prefix.length).split(/ +/);
+    const commandName = args.shift().toLowerCase();
+    //const id = client.guilds.get("GUILD-ID");
 
-    return;
-  }
+    if (commandName == "restart") {
+      message.channel
+        .send("Restarting...")
+        .then(() => client.destroy())
+        .then(() => client.login(process.env.token));
 
-  if (!client.commands.has(commandName)) return;
+      return;
+    }
 
-  const command = client.commands.get(commandName);
-  try {
-    command.execute(message, args);
-  } catch (error) {
-    console.error(error);
-    message.reply("there was an error trying to execute that command!");
-  }
+    if (!client.commands.has(commandName)) return;
+
+    const command = client.commands.get(commandName);
+    try {
+      command.execute(message, args, config);
+    } catch (error) {
+      console.error(error);
+      message.reply("there was an error trying to execute that command!");
+    }
+  });
 });
 
-client.on("guildMemberAdd2", (member) => {
+client.on("guildMemberAdd", async (member) => {
+  await GetConfig().then((data) => {
+    config = data;
+
+    if (!config.autoTicket) {
+      return;
+    }
+  });
+
   member.guild.fetch();
   guild = member.guild;
   const everyoneRole = guild.roles.everyone;
@@ -110,7 +126,15 @@ client.on("guildMemberAdd2", (member) => {
   ticketNum++;
 });
 
-client.on("presenceUpdate2", (oldPresence, newPresence) => {
+client.on("presenceUpdate", async (oldPresence, newPresence) => {
+  await GetConfig().then((data) => {
+    config = data;
+
+    if (!config.autoSwitch) {
+      return;
+    }
+  });
+
   let member = newPresence.member;
   // User id of the user you're tracking status.
 
@@ -164,7 +188,7 @@ client.on("presenceUpdate2", (oldPresence, newPresence) => {
     .then((channel) => channel.send(`Switched to <@${switchedUser}>`));
 });
 
-client.on("channelCreate", (channel) => {
+client.on("channelCreate", async (channel) => {
   let x = channel.guild.me.joinedTimestamp / 1000;
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
 
