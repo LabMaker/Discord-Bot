@@ -21,7 +21,7 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-keyv.on("error", (err) => console.log("Connection Error", err));
+keyv.on("error", (err) => console.log("Connection Error e", err));
 
 client.once("ready", async () => {
   await GetConfig().then((data) => {
