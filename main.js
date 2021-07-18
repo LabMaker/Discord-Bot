@@ -35,48 +35,48 @@ client.once("ready", async () => {
 });
 
 client.on("message", async (message) => {
-  if (message.author.id === "827212859447705610" && config.autoReact) {
-    message.react("🥱");
-  }
+  await GetConfig().then((data) => {
+    config = data;
+    if (message.author.id === "827212859447705610" && config.autoReact) {
+      message.react("🥱");
+    }
 
-  if (message.channel.id == "863424666052198410" && !message.author.bot) {
-    message.delete();
-    message
-      .reply("This is a log channel please use the main channel")
-      .then((msg) => {
-        msg.delete({ timeout: 5000 });
-      });
-    return;
-  }
-
-  if (!message.content.startsWith(process.env.prefix) || message.author.bot) {
-    if (message.author.bot) {
+    if (message.channel.id == "863424666052198410" && !message.author.bot) {
+      message.delete();
+      message
+        .reply("This is a log channel please use the main channel")
+        .then((msg) => {
+          msg.delete({ timeout: 5000 });
+        });
       return;
     }
 
-    const ticCommand = client.commands.get("ticket");
-    ticCommand.execute(message, client);
-    //command.execute("ticket");
-    return;
-  }
+    if (!message.content.startsWith(process.env.prefix) || message.author.bot) {
+      if (message.author.bot) {
+        return;
+      }
 
-  const args = message.content.slice(process.env.prefix.length).split(/ +/);
-  const commandName = args.shift().toLowerCase();
-  //const id = client.guilds.get("GUILD-ID");
+      const ticCommand = client.commands.get("ticket");
+      ticCommand.execute(message, client);
+      //command.execute("ticket");
+      return;
+    }
 
-  if (commandName == "restart") {
-    message.channel
-      .send("Restarting...")
-      .then(() => client.destroy())
-      .then(() => client.login(process.env.token));
+    const args = message.content.slice(process.env.prefix.length).split(/ +/);
+    const commandName = args.shift().toLowerCase();
+    //const id = client.guilds.get("GUILD-ID");
 
-    return;
-  }
+    if (commandName == "restart") {
+      message.channel
+        .send("Restarting...")
+        .then(() => client.destroy())
+        .then(() => client.login(process.env.token));
 
-  if (!client.commands.has(commandName)) return;
+      return;
+    }
 
-  await GetConfig().then((data) => {
-    config = data;
+    if (!client.commands.has(commandName)) return;
+
     const command = client.commands.get(commandName);
     try {
       command.execute(message, args, config);
