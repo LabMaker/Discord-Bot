@@ -6,7 +6,7 @@ module.exports = {
   async execute(message, args) {
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
 
-    if (Number(ticketID) == NaN) {
+    if (isNaN(ticketID)) {
       return message.channel.send(
         `Tickets can only be created in ticket category ${message.member}`
       );
