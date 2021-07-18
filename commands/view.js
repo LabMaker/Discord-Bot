@@ -4,7 +4,7 @@ const Discord = require("discord.js");
 module.exports = {
   name: "view",
   description: "Shows ticket Status",
-  async execute(message, args) {
+  async execute(message, args, config) {
     ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
     const ticket = new Keyv(process.env.DB_CONN_STRING, {
       namespace: ticketID,
@@ -37,7 +37,7 @@ module.exports = {
         { name: "Budget", value: budget, inline: true }
       )
       .setFooter("Submitted")
-      .setThumbnail("https://i.imgur.com/E7PB9cr.gif")
+      .setThumbnail(config.imageUrl)
       .setTimestamp();
     message.channel.send(ticketEmbed);
   },
