@@ -37,7 +37,7 @@ client.once("ready", async () => {
 client.on("message", async (message) => {
   await GetConfig().then((data) => {
     config = data;
-    if (message.author.id === "827212859447705610" && config.autoReact) {
+    if (message.author.id === "830423278015217714" && config.autoReact) {
       message.react("🥱");
     }
 
