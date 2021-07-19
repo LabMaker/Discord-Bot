@@ -23,7 +23,7 @@ for (const file of commandFiles) {
 
 keyv.on("error", (err) => console.log("Connection Error e", err));
 
-client.once("ready", async () => {
+client.on("ready", async () => {
   await GetConfig().then((data) => {
     config = data;
     client.user.setPresence({
@@ -70,7 +70,9 @@ client.on("message", async (message) => {
       message.channel
         .send("Restarting...")
         .then(() => client.destroy())
-        .then(() => client.login(process.env.token));
+        .then(() => {
+          client.login(process.env.token);
+        });
 
       return;
     }
@@ -94,36 +96,36 @@ client.on("guildMemberAdd", async (member) => {
     if (!config.autoTicket) {
       return;
     }
-  });
 
-  member.guild.fetch();
-  guild = member.guild;
-  const everyoneRole = guild.roles.everyone;
-  const helperRole = guild.roles.cache.find((role) => {
-    return role.name === "Helper";
-  });
-
-  guild.channels
-    .create(`Ticket-0${ticketNum}`, {
-      type: "text",
-      parent: "818879990774628374",
-      permissionOverwrites: [
-        { id: everyoneRole, deny: ["VIEW_CHANNEL"] },
-        { id: member.id, allow: ["VIEW_CHANNEL"] },
-        { id: helperRole, allow: ["VIEW_CHANNEL"] },
-      ],
-    })
-    .then((channel) => {
-      channel.send(`<@${member.id}> Welcome`);
-      const ticketEmbed = new Discord.MessageEmbed()
-        .setColor("#10F9AB")
-        .setDescription(
-          `A Support member will be with you shortly, please answer the questions below. `
-        )
-        .setFooter("Task Place Ticket Tool");
-      channel.send(ticketEmbed);
+    member.guild.fetch();
+    guild = member.guild;
+    const everyoneRole = guild.roles.everyone;
+    const helperRole = guild.roles.cache.find((role) => {
+      return role.name === "Helper";
     });
-  ticketNum++;
+
+    guild.channels
+      .create(`Ticket-0${ticketNum}`, {
+        type: "text",
+        parent: "818879990774628374",
+        permissionOverwrites: [
+          { id: everyoneRole, deny: ["VIEW_CHANNEL"] },
+          { id: member.id, allow: ["VIEW_CHANNEL"] },
+          { id: helperRole, allow: ["VIEW_CHANNEL"] },
+        ],
+      })
+      .then((channel) => {
+        channel.send(`<@${member.id}> Welcome`);
+        const ticketEmbed = new Discord.MessageEmbed()
+          .setColor("#10F9AB")
+          .setDescription(
+            `A Support member will be with you shortly, please answer the questions below. `
+          )
+          .setFooter("Task Place Ticket Tool");
+        channel.send(ticketEmbed);
+      });
+    ticketNum++;
+  });
 });
 
 client.on("presenceUpdate", async (oldPresence, newPresence) => {
@@ -133,59 +135,61 @@ client.on("presenceUpdate", async (oldPresence, newPresence) => {
     if (!config.autoSwitch) {
       return;
     }
+
+    let member = newPresence.member;
+    // User id of the user you're tracking status.
+
+    if (newPresence.guild.id != "826449038727184404") {
+      return;
+    }
+
+    //Check if not Dias || Tarmac
+    if (
+      newPresence.member.id != 827212859447705610 &&
+      newPresence.member.id != 818867515157381140
+    ) {
+      return;
+    }
+
+    const tarmac = client.users.cache.find(
+      (u) => u.id === "827212859447705610"
+    );
+    const dias = client.users.cache.find((u) => u.id === "818867515157381140");
+
+    const tarmacStatus = tarmac.presence.status;
+    const diasStatus = dias.presence.status;
+
+    let messageDiscrim = "";
+    let switchedUserID = "";
+
+    if (tarmacStatus == "online" && diasStatus == "online") {
+      return;
+    }
+
+    if (
+      (tarmacStatus == "offline" || tarmacStatus == "idle") &&
+      (diasStatus == "offline" || diasStatus == "idle")
+    ) {
+      return;
+    } else if (tarmacStatus == "offline" || tarmacStatus == "idle") {
+      messageDiscrim = `${dias.username}#${dias.discriminator}`;
+      switchedUser = dias.id;
+    } else if (diasStatus == "offline" || diasStatus == "idle") {
+      messageDiscrim = `${tarmac.username}#${tarmac.discriminator}`;
+      switchedUser = tarmac.id;
+    }
+
+    const customMessage = `Reach me out on discord which is ${messageDiscrim} Add me ill respond ASAP.`;
+
+    postURI = process.env.API_SITE + "bot/updateMessage";
+
+    axios.post(postURI, {
+      pmBody: customMessage,
+    });
+    client.channels
+      .fetch("853967623673872385")
+      .then((channel) => channel.send(`Switched to <@${switchedUser}>`));
   });
-
-  let member = newPresence.member;
-  // User id of the user you're tracking status.
-
-  if (newPresence.guild.id != "826449038727184404") {
-    return;
-  }
-
-  //Check if not Dias || Tarmac
-  if (
-    newPresence.member.id != 827212859447705610 &&
-    newPresence.member.id != 818867515157381140
-  ) {
-    return;
-  }
-
-  const tarmac = client.users.cache.find((u) => u.id === "827212859447705610");
-  const dias = client.users.cache.find((u) => u.id === "818867515157381140");
-
-  const tarmacStatus = tarmac.presence.status;
-  const diasStatus = dias.presence.status;
-
-  let messageDiscrim = "";
-  let switchedUserID = "";
-
-  if (tarmacStatus == "online" && diasStatus == "online") {
-    return;
-  }
-
-  if (
-    (tarmacStatus == "offline" || tarmacStatus == "idle") &&
-    (diasStatus == "offline" || diasStatus == "idle")
-  ) {
-    return;
-  } else if (tarmacStatus == "offline" || tarmacStatus == "idle") {
-    messageDiscrim = `${dias.username}#${dias.discriminator}`;
-    switchedUser = dias.id;
-  } else if (diasStatus == "offline" || diasStatus == "idle") {
-    messageDiscrim = `${tarmac.username}#${tarmac.discriminator}`;
-    switchedUser = tarmac.id;
-  }
-
-  const customMessage = `Reach me out on discord which is ${messageDiscrim} Add me ill respond ASAP.`;
-
-  postURI = process.env.API_SITE + "bot/updateMessage";
-
-  axios.post(postURI, {
-    pmBody: customMessage,
-  });
-  client.channels
-    .fetch("853967623673872385")
-    .then((channel) => channel.send(`Switched to <@${switchedUser}>`));
 });
 
 client.on("channelCreate", async (channel) => {
