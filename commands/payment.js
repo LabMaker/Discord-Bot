@@ -1,13 +1,34 @@
 const { MessageButton } = require("discord-buttons");
+const { GetPayments } = require("../utils/APIHelper.js");
 module.exports = {
   name: "pay",
   description: "Sends Payment",
   async execute(message, args) {
-    if (!args[0]) {
-      return constructMessage(message);
-    }
+    await GetPayments().then((payments) => {
+      let fiatButtons = [];
 
-    methodType = args[0].toLowerCase();
+      let cryptoButton = new MessageButton()
+        .setStyle("green")
+        .setLabel("Crypto")
+        .setID("crypto");
+
+      payments.forEach((payment) => {
+        if (payment.type == "Fiat") {
+          let tempButton = new MessageButton()
+            .setStyle("blurple")
+            .setLabel(payment.name)
+            .setID(payment.name);
+
+          fiatButtons.push(tempButton);
+        }
+      });
+
+      fiatButtons.push(cryptoButton);
+      message.channel.send("Our Payment Methods", {
+        buttons: fiatButtons,
+      });
+    });
+    return;
 
     if (methodType == "cashapp") {
       message.channel.send(`Cashapp is currently unavailable`);

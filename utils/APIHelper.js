@@ -16,3 +16,8 @@ module.exports.GetConfig = async () => {
   let data = await response.json();
   return data[0];
 };
+
+module.exports.GetPayments = async () => {
+  let response = await fetch(domain + "payments");
+  return await response.json();
+};

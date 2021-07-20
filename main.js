@@ -7,8 +7,10 @@ const keyv = new Keyv(process.env.DB_CONN_STRING);
 const client = new Discord.Client();
 require("discord-buttons")(client);
 const { MessageButton } = require("discord-buttons");
-const { GetConfig } = require("./utils/APIHelper.js");
+const { GetConfig, GetPayments } = require("./utils/APIHelper.js");
 const { sendLog } = require("./utils/logChannel.js");
+const { execute } = require("./commands/payment");
+
 let ticketNum = process.env.TICKET_NUM;
 let config = "";
 client.commands = new Discord.Collection();
@@ -239,6 +241,46 @@ client.on("inviteCreate", async (invite) => {
 
 client.on("clickButton", async (button) => {
   //Possible Rewrite adding this to the WebAPI (is this Unsafe? would have to encrypto data on API if we did this)
+  await GetPayments().then((payments) => {
+    if (button.id === "crypto") {
+      let cryptoButtons = [];
+
+      let backButton = new MessageButton()
+        .setStyle("gray")
+        .setLabel("<")
+        .setID("back");
+
+      payments.forEach((payment) => {
+        if (payment.type == "Crypto") {
+          let tempButton = new MessageButton()
+            .setStyle("blurple")
+            .setLabel(payment.name)
+            .setID(payment.name);
+
+          cryptoButtons.push(tempButton);
+        }
+      });
+
+      cryptoButtons.push(backButton);
+      button.message.delete();
+      button.channel.send("Our Payment Methods", {
+        buttons: cryptoButtons,
+      });
+    } else if (button.id == "back") {
+      button.message.delete();
+      const command = client.commands.get("pay");
+      command.execute(button.message, "", config);
+    }
+
+    payments.forEach((payment) => {
+      if (button.id === payment.name) {
+        button.channel.send(`${payment.name}: ${payment.value}`);
+        button.reply.defer();
+      }
+    });
+  });
+  return;
+
   if (button.id === "crypto") {
     let ethButton = new MessageButton()
       .setStyle("blurple")
