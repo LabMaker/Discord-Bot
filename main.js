@@ -37,58 +37,63 @@ client.on("ready", async () => {
 });
 
 client.on("message", async (message) => {
-  await GetConfig().then((data) => {
-    config = data;
-    if (message.author.id === "830423278015217714" && config.autoReact) {
-      message.react("🥱");
-    }
+  await GetConfig()
+    .then((data) => {
+      config = data;
+      if (message.author.id === "830423278015217714" && config.autoReact) {
+        message.react("🥱");
+      }
 
-    if (message.channel.id == "863424666052198410" && !message.author.bot) {
-      message.delete();
-      message
-        .reply("This is a log channel please use the main channel")
-        .then((msg) => {
-          msg.delete({ timeout: 5000 });
-        });
-      return;
-    }
-
-    if (!message.content.startsWith(process.env.prefix) || message.author.bot) {
-      if (message.author.bot) {
+      if (message.channel.id == "863424666052198410" && !message.author.bot) {
+        message.delete();
+        message
+          .reply("This is a log channel please use the main channel")
+          .then((msg) => {
+            msg.delete({ timeout: 5000 });
+          });
         return;
       }
 
-      const ticCommand = client.commands.get("ticket");
-      ticCommand.execute(message, client);
-      //command.execute("ticket");
-      return;
-    }
+      if (
+        !message.content.startsWith(process.env.prefix) ||
+        message.author.bot
+      ) {
+        if (message.author.bot) {
+          return;
+        }
 
-    const args = message.content.slice(process.env.prefix.length).split(/ +/);
-    const commandName = args.shift().toLowerCase();
-    //const id = client.guilds.get("GUILD-ID");
+        const ticCommand = client.commands.get("ticket");
+        ticCommand.execute(message, client);
+        //command.execute("ticket");
+        return;
+      }
 
-    if (commandName == "restart") {
-      message.channel
-        .send("Restarting...")
-        .then(() => client.destroy())
-        .then(() => {
-          client.login(process.env.token);
-        });
+      const args = message.content.slice(process.env.prefix.length).split(/ +/);
+      const commandName = args.shift().toLowerCase();
+      //const id = client.guilds.get("GUILD-ID");
 
-      return;
-    }
+      if (commandName == "restart") {
+        message.channel
+          .send("Restarting...")
+          .then(() => client.destroy())
+          .then(() => {
+            client.login(process.env.token);
+          });
 
-    if (!client.commands.has(commandName)) return;
+        return;
+      }
 
-    const command = client.commands.get(commandName);
-    try {
-      command.execute(message, args, config);
-    } catch (error) {
-      console.error(error);
-      message.reply("there was an error trying to execute that command!");
-    }
-  });
+      if (!client.commands.has(commandName)) return;
+
+      const command = client.commands.get(commandName);
+      try {
+        command.execute(message, args, config);
+      } catch (error) {
+        console.error(error);
+        message.reply("there was an error trying to execute that command!");
+      }
+    })
+    .catch(console.log("Message Handler Error"));
 });
 
 client.on("guildMemberAdd", async (member) => {
@@ -242,112 +247,41 @@ client.on("inviteCreate", async (invite) => {
 client.on("clickButton", async (button) => {
   //Possible Rewrite adding this to the WebAPI (is this Unsafe? would have to encrypto data on API if we did this)
   await GetPayments().then((payments) => {
-    if (button.id === "crypto") {
-      let cryptoButtons = [];
+    const backButton = new MessageButton()
+      .setStyle("gray")
+      .setLabel("<")
+      .setID("back");
 
-      let backButton = new MessageButton()
-        .setStyle("gray")
-        .setLabel("<")
-        .setID("back");
-
-      payments.forEach((payment) => {
-        if (payment.type == "Crypto") {
-          let tempButton = new MessageButton()
-            .setStyle("blurple")
-            .setLabel(payment.name)
-            .setID(payment.name);
-
-          cryptoButtons.push(tempButton);
-        }
-      });
-
-      cryptoButtons.push(backButton);
-      button.message.delete();
-      button.channel.send("Our Payment Methods", {
-        buttons: cryptoButtons,
-      });
-    } else if (button.id == "back") {
+    if (button.id == "back") {
       button.message.delete();
       const command = client.commands.get("pay");
-      command.execute(button.message, "", config);
+      return command.execute(button.message, "", config);
     }
+
+    let paymentButtons = [];
 
     payments.forEach((payment) => {
       if (button.id === payment.name) {
         button.channel.send(`${payment.name}: ${payment.value}`);
-        button.reply.defer();
+        return button.reply.defer();
+      } else if (button.id === payment.type) {
+        let tempButton = new MessageButton()
+          .setStyle("blurple")
+          .setLabel(payment.name)
+          .setID(payment.name);
+
+        paymentButtons.push(tempButton);
       }
     });
+
+    if (paymentButtons.length > 0) {
+      paymentButtons.push(backButton);
+      button.message.delete();
+      button.channel.send("Our Payment Methods", {
+        buttons: paymentButtons,
+      });
+    }
   });
-  return;
-
-  if (button.id === "crypto") {
-    let ethButton = new MessageButton()
-      .setStyle("blurple")
-      .setLabel("ETH")
-      .setID("eth");
-
-    let btcAddress = new MessageButton()
-      .setStyle("red")
-      .setLabel("BTC")
-      .setID("btc");
-
-    let ltcAddress = new MessageButton()
-      .setStyle("blurple")
-      .setLabel("LTC")
-      .setID("ltc");
-
-    let backButton = new MessageButton()
-      .setStyle("gray")
-      .setLabel("<")
-      .setID("back");
-    button.message.delete();
-
-    button.channel.send("Our Crypto Methods", {
-      buttons: [ethButton, btcAddress, ltcAddress, backButton],
-    });
-  } else if (button.id === "venmo") {
-    button.channel.send("Venmo: @assignmenthelper");
-  } else if (button.id === "zelle") {
-    button.channel.send("Zelle: yegireddilikhita@gmail.com");
-  } else if (button.id === "eth") {
-    button.channel.send(`ETH: 0xCb3fA82D02751Db19ca9F891D99225FD70bb9c26`);
-  } else if (button.id === "btc") {
-    button.channel.send(`BTC: 3BomLGxJbTKJ648hkWzHA9MX6vgfhPX3A9`);
-  } else if (button.id === "ltc") {
-    button.channel.send(`LTC: MFn7mwJXkCGUVDxKRsLX1f8XSe2hrt916W`);
-  } else if (button.id === "cashapp") {
-    button.channel.send(`Cashapp: £JoeyLatzz`);
-  } else if (button.id === "back") {
-    //Move to function in Utils as its used twice
-    let cryptoButton = new MessageButton()
-      .setStyle("green")
-      .setLabel("Crypto")
-      .setID("crypto");
-
-    let venmoButton = new MessageButton()
-      .setStyle("blurple")
-      .setLabel("Venmo")
-      .setID("venmo");
-
-    let zelleButton = new MessageButton()
-      .setStyle("red")
-      .setLabel("Zelle")
-      .setID("zelle");
-
-    let cashappButton = new MessageButton()
-      .setStyle("green")
-      .setLabel("Cashapp")
-      .setID("cashapp");
-
-    button.message.delete();
-
-    button.channel.send("Our Payment Methods", {
-      buttons: [cryptoButton, venmoButton, zelleButton, cashappButton],
-    });
-  }
-
-  button.reply.defer();
 });
 
 client.login(process.env.token);
