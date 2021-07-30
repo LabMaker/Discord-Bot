@@ -9,7 +9,7 @@ require("discord-buttons")(client);
 const { MessageButton } = require("discord-buttons");
 const { GetConfig, GetPayments } = require("./utils/APIHelper.js");
 const { sendLog } = require("./utils/logChannel.js");
-const { execute } = require("./commands/payment");
+const { execute } = require("./utils/AutoMod");
 
 let ticketNum = process.env.TICKET_NUM;
 let config = "";
@@ -53,35 +53,22 @@ client.on("message", async (message) => {
           });
         return;
       }
+      if (message.author.bot) {
+        return;
+      }
 
-      if (
-        !message.content.startsWith(process.env.prefix) ||
-        message.author.bot
-      ) {
-        if (message.author.bot) {
-          return;
-        }
+      if (!message.content.startsWith(process.env.prefix)) {
+        execute(message, client);
 
         const ticCommand = client.commands.get("ticket");
         ticCommand.execute(message, client);
+
         //command.execute("ticket");
         return;
       }
 
       const args = message.content.slice(process.env.prefix.length).split(/ +/);
       const commandName = args.shift().toLowerCase();
-      //const id = client.guilds.get("GUILD-ID");
-
-      if (commandName == "restart") {
-        message.channel
-          .send("Restarting...")
-          .then(() => client.destroy())
-          .then(() => {
-            client.login(process.env.token);
-          });
-
-        return;
-      }
 
       if (!client.commands.has(commandName)) return;
 
@@ -93,7 +80,7 @@ client.on("message", async (message) => {
         message.reply("there was an error trying to execute that command!");
       }
     })
-    .catch(console.log("Message Handler Error"));
+    .catch((error) => console.error(error));
 });
 
 client.on("guildMemberAdd", async (member) => {
@@ -193,6 +180,7 @@ client.on("presenceUpdate", async (oldPresence, newPresence) => {
     axios.post(postURI, {
       pmBody: customMessage,
     });
+
     client.channels
       .fetch("853967623673872385")
       .then((channel) => channel.send(`Switched to <@${switchedUser}>`));
@@ -202,16 +190,9 @@ client.on("presenceUpdate", async (oldPresence, newPresence) => {
 client.on("channelCreate", async (channel) => {
   let x = channel.guild.me.joinedTimestamp / 1000;
   if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
-
-  if (channel.parent.name.toLowerCase() != "open orders") {
-    return;
-  }
+  if (channel.parent.name.toLowerCase() != "open orders") return;
 
   ticketID = channel.name.toLowerCase().replace("ticket-", "");
-  /*sendLog(
-    client,
-    `A Ticket Was Created by with ID ${ticketID} <@342052641146142734>`
-  ); */
 
   setTimeout(async () => {
     channel.send(
