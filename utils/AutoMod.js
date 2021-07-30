@@ -2,7 +2,7 @@ module.exports = {
   name: "autoMod",
   description: "Auto Mods",
   async execute(message, args) {
-    const ignoredCategory
+    const ignoredCategory = "";
     const tempWords = [
       "Scammed",
       "Scammer",
