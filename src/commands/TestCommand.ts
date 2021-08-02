@@ -4,10 +4,11 @@ import DiscordClient from "../utils/client";
 
 export default class TestCommand extends Command{
     constructor() {
-        super('Test', 'Admin', [''])
+        super('test', 'Admin', [''])
     }
 
     async run(client: DiscordClient, message: Message, args: string[]) {
-        console.log("Running");
+        console.log(args);
+        console.log("running...")
     }
 }

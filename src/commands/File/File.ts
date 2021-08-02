@@ -4,7 +4,7 @@ import DiscordClient from "../../utils/client";
 
 export default class FileCommand extends Command {
     constructor() {
-        super('Test2', 'Admin', [''])
+        super('test2', 'Admin', [''])
     }
 
     async run(client: DiscordClient, message: Message, args: string[]) {

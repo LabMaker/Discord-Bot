@@ -8,5 +8,5 @@ const client = new DiscordClient();
 (async () => {
     await registerCommands(client);
     await registerEvents(client);
-    await client.login(process.env.BOT_TOKEN);    
+    await client.login(process.env.BOT_TOKEN);   
 })()

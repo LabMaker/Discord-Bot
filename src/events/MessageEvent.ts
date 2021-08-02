@@ -8,6 +8,20 @@ export default class MessageEvent extends Event {
     }
 
     async run(client: DiscordClient, message: Message) {
-        console.log("Got Message Running");
+        
+        if (message.author.bot) {
+            return;
+        }
+
+        if (message.content.startsWith(client.prefix)) {
+            const args = message.content.slice(client.prefix.length).split(/ +/);
+            const commandName = args[0];
+
+            const command = client.commands.get(commandName.toLowerCase());
+            if (command) {
+                args.shift();
+                command.run(client, message, args);
+            }
+        }
     }
 }

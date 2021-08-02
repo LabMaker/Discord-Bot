@@ -8,6 +8,11 @@ export default class MessageEvent extends Event {
     }
 
     async run(client: DiscordClient, message: Message) {
+
+        client.user!.setPresence({
+            activity: { name: "Helping Students with their work", type: "PLAYING" },
+            status: "online",
+          });
         console.log(`${client.user!.username} is running.`);
     }
 }
