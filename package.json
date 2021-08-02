@@ -4,8 +4,8 @@
   "description": "Discord Bot That handles New Tickets & Updates",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.ts --strictNullChecks",
-    "start": "node ./build/index.js --strictNullChecks",
+    "dev": "nodemon ./src/index.ts",
+    "start": "node ./build/index.js",
     "build": "tsc"
   },
   "repository": {
@@ -21,7 +21,8 @@
   "homepage": "https://github.com/LabMaker/Discord-Bot#readme",
   "dependencies": {
     "discord.js": "^12.5.3",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@types/node": "^16.4.10",

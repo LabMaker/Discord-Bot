@@ -8,5 +8,5 @@ export default abstract class Command {
     getCategory(): string { return this.category }
     getAliases(): string[] { return this.aliases }
 
-    abstract run(client: DiscordClient, message: Message, args: string[] | null): Promise<void>;
+    abstract run(client: DiscordClient, message: Message, args: string[] | null): any;
 }

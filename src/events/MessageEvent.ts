@@ -18,6 +18,7 @@ export default class MessageEvent extends Event {
             const commandName = args[0];
 
             const command = client.commands.get(commandName.toLowerCase());
+
             if (command) {
                 args.shift();
                 command.run(client, message, args);
