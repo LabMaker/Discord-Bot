@@ -74,7 +74,7 @@ client.on("message", async (message) => {
 
       const command = client.commands.get(commandName);
       try {
-        command.execute(message, args, config);
+        command.execute(message, args, config, client);
       } catch (error) {
         console.error(error);
         message.reply("there was an error trying to execute that command!");
@@ -86,6 +86,14 @@ client.on("message", async (message) => {
 client.on("guildMemberAdd", async (member) => {
   await GetConfig().then((data) => {
     config = data;
+    console.log("Started Event");
+    setTimeout(async () => {
+      console.log("Adding Role");
+      let role = member.guild.roles.cache.find(
+        (r) => r.id === "863817776903749632"
+      );
+      member.roles.add(role);
+    }, 90000);
 
     if (!config.autoTicket) {
       return;
