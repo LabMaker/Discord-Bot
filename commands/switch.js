@@ -1,8 +1,8 @@
-const axios = require("axios");
-require("dotenv").config();
+const axios = require('axios');
+require('dotenv').config();
 module.exports = {
-  name: "switch",
-  description: "Switch Message",
+  name: 'switch',
+  description: 'Switch Message',
   execute(message, args) {
     user = message.mentions.users.first();
 
@@ -17,9 +17,10 @@ module.exports = {
       console.log(user);
     }
 
-    const customMessage = `Hello. I can help you out with your work. Send me a friend request on discord which is  ${user.username}#${user.discriminator} and we can go on from there.`;
+    //Future Update: Get message content frombody and auto append discord tag to correct place
+    const customMessage = `Add me on discord at ${user.username}#${user.discriminator} and lets discuss.`;
 
-    postURI = process.env.API_SITE + "bot/updateMessage";
+    postURI = process.env.API_SITE + 'bot/updateMessage';
 
     axios.post(postURI, {
       pmBody: customMessage,
