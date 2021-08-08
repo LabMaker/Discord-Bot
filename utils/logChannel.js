@@ -1,11 +1,11 @@
-require("dotenv").config();
+require('dotenv').config();
 
 module.exports = {
   sendLog(client, msg) {
     //ReWrite maybe to find all servers with Log Channel inside bot?
     const servers = [
-      ["863423914230546462", "863424666052198410"], //Big Baller
-      ["818838130815795241", "838759492829184011"], //ChingJo (Backup)
+      ['863423914230546462', '863424666052198410'], //Big Baller
+      ['818838130815795241', '838759492829184011'], //ChingJo (Backup)
     ]; // SERVERID | CHANNELID
 
     servers.forEach((server) => {

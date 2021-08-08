@@ -1,14 +1,14 @@
 module.exports = {
-  name: "autoMod",
-  description: "Auto Mods",
+  name: 'autoMod',
+  description: 'Auto Mods',
   async execute(message, args) {
-    const ignoredCategory = "";
+    const ignoredCategory = '';
     const tempWords = [
-      "Scammed",
-      "Scammer",
-      "scammers",
-      "Sceem",
-      "Fake Server",
+      'Scammed',
+      'Scammer',
+      'scammers',
+      'Sceem',
+      'Fake Server',
     ];
 
     const bannedWords = tempWords.map((word) => word.toLowerCase());

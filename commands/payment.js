@@ -1,8 +1,8 @@
-const { MessageButton } = require("discord-buttons");
-const { GetPayments } = require("../utils/APIHelper.js");
+const { MessageButton } = require('discord-buttons');
+const { GetPayments } = require('../utils/APIHelper.js');
 module.exports = {
-  name: "pay",
-  description: "Sends Payment",
+  name: 'pay',
+  description: 'Sends Payment',
   async execute(message, args) {
     await GetPayments().then((payments) => {
       let buttonTypes = [];
@@ -11,7 +11,7 @@ module.exports = {
       payments.forEach((payment) => {
         if (!types.includes(payment.type)) {
           let tempButton = new MessageButton()
-            .setStyle("blurple")
+            .setStyle('blurple')
             .setLabel(payment.type)
             .setID(payment.type);
 
@@ -20,7 +20,7 @@ module.exports = {
         }
       });
 
-      message.channel.send("Our Payment Methods", {
+      message.channel.send('Our Payment Methods', {
         buttons: buttonTypes,
       });
     });

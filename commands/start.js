@@ -1,10 +1,10 @@
-const Keyv = require("keyv");
+const Keyv = require('keyv');
 
 module.exports = {
-  name: "start",
-  description: "Starts the ticket again",
+  name: 'start',
+  description: 'Starts the ticket again',
   async execute(message, args) {
-    ticketID = message.channel.name.toLowerCase().replace("ticket-", "");
+    ticketID = message.channel.name.toLowerCase().replace('ticket-', '');
 
     if (isNaN(ticketID)) {
       return message.channel.send(
@@ -22,7 +22,7 @@ module.exports = {
       `Started New Ticket, if you would like to stop the ticket use !stop`
     );
 
-    await ticket.set("submitted", false);
+    await ticket.set('submitted', false);
 
     message.channel.send(
       `**Is this an exam, assignment or homework sheet?** Include the subject as well.`
