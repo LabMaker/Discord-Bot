@@ -1,22 +1,25 @@
-import { Guild, Message } from "discord.js";
-import Event from "../utils/Base/Event";
-import DiscordClient from "../utils/client";
-import { GuildConfig } from "../data/schemas/GuildConfigSchema";
-import Guilds from "../data/Guilds";
+import { Message } from 'discord.js';
+import Event from '../utils/Base/Event';
+import DiscordClient from '../utils/client';
+import { GuildConfigDto } from '../data/dtos/guildConfig.dto';
+
 export default class MessageEvent extends Event {
   constructor() {
-    super("message");
+    super('message');
   }
 
   async run(client: DiscordClient, message: Message) {
     if (message.author.bot) return;
 
-    client.commands.get("ticket").run(client, message, []);
-
     const guildId = message.guild.id;
-    const guildConfig = await GuildConfig.findOne({ guildId });
+    let guildConfig: GuildConfigDto = await client.API.DiscordConfig.getOne(
+      guildId
+    );
 
-    if (!guildConfig) await GuildConfig.create({ guildId });
+    client.commands.get('ticket').run(client, message, [], guildConfig);
+
+    if (!guildConfig)
+      guildConfig = await client.API.DiscordConfig.create(guildId);
 
     if (message.content.startsWith(guildConfig.prefix)) {
       const args = message.content.slice(guildConfig.prefix.length).split(/ +/);
@@ -26,7 +29,7 @@ export default class MessageEvent extends Event {
 
       if (command) {
         args.shift();
-        command.run(client, message, args);
+        command.run(client, message, args, guildConfig);
       }
     }
   }

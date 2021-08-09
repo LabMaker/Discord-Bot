@@ -20,11 +20,9 @@
   },
   "homepage": "https://github.com/LabMaker/Discord-Bot#readme",
   "dependencies": {
-    "@types/mongoose": "^5.11.97",
     "axios": "^0.21.1",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
-    "mongoose": "^5.13.5",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
