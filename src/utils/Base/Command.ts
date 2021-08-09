@@ -1,5 +1,6 @@
-import { Message } from "discord.js";
-import DiscordClient from "../client";
+import { Message } from 'discord.js';
+import { GuildConfigDto } from '../../data/dtos/guildConfig.dto';
+import DiscordClient from '../client';
 
 export default abstract class Command {
   constructor(
@@ -21,6 +22,7 @@ export default abstract class Command {
   abstract run(
     client: DiscordClient,
     message: Message,
-    args: string[] | null
-  ): any;
+    args: string[] | null,
+    guildConfig: GuildConfigDto | null
+  ): Promise<Message> | Promise<void>;
 }
