@@ -17,7 +17,7 @@ export default class MessageEvent extends Event {
     client: DiscordClient,
     channel: NewsChannel | TextChannel | DMChannel
   ) {
-    if (channel.type == 'dm') {
+    if (channel.type == 'DM') {
       return;
     }
 

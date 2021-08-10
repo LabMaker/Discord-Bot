@@ -1,4 +1,4 @@
-import { Client, ClientOptions, Collection } from 'discord.js';
+import { Client, ClientOptions, Collection, Intents } from 'discord.js';
 import { APIHandler } from '../data/apiHandler';
 import { TicketDto } from '../data/dtos/ticket.dto';
 import Command from './Base/Command';

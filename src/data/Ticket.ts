@@ -1,6 +1,4 @@
 import { API } from '../utils/Base/API';
-import { GuildConfigDto } from './dtos/guildConfig.dto';
-import axios from 'axios';
 import { TicketDto } from './dtos/ticket.dto';
 
 export class TicketAPI extends API {
@@ -9,19 +7,14 @@ export class TicketAPI extends API {
   }
 
   async getOne(serverId: string, ticketId: string): Promise<TicketDto> {
-    try {
-      const url = this.getUrl();
-      const updatedUrl = `${url}${serverId}/${ticketId}`;
-      return (await axios.get(updatedUrl)).data;
-    } catch (err) {
-      console.error('Error Occured');
-    }
+    const url = this.getUrl();
+    const updatedUrl = `${url}${serverId}/${ticketId}`;
+    return await this.get(updatedUrl);
   }
 
   async getAll(serverId: string): Promise<TicketDto[]> {
     const url = this.getUrl() + serverId;
-
-    return (await axios.get(url)).data;
+    return await this.get(url);
   }
 
   async create(
@@ -29,18 +22,11 @@ export class TicketAPI extends API {
     ticketId: Number,
     channelId: string
   ): Promise<TicketDto | any> {
-    await axios
-      .post(this.getUrl(), {
-        serverId,
-        ticketId,
-        channelId,
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const options = { serverId, ticketId, channelId };
+    return await this.post(options);
   }
 
   async update(updatedTicket: TicketDto): Promise<TicketDto | any> {
-    return (await axios.put(this.getUrl(), updatedTicket)).data;
+    return await this.put(updatedTicket);
   }
 }

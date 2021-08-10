@@ -1,6 +1,6 @@
 export class GuildConfigDto {
   _id: string;
-  paymentConfigId: string;
+  paymentConfigId: Number;
   prefix: string;
   embedImageUrl: string;
   autoSwitcher: Boolean;

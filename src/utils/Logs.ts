@@ -13,7 +13,6 @@ export default class Logs {
       .setAuthor(
         `${message.member.user.username}#${message.member.user.discriminator} - Ticket ${ticketDetails.ticketId}`,
         `${message.member.user.displayAvatarURL({
-          format: 'gif',
           dynamic: true,
         })}`,
         message.url

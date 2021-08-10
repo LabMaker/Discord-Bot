@@ -49,7 +49,9 @@ export default class Prefix extends Command {
       ticketDetails.budget = message.content;
       ticketDetails.submitted = true;
       await client.API.Ticket.update(ticketDetails);
-      message.channel.send(await Logs.GenerateEmbed(ticketDetails, message));
+      message.channel.send({
+        embeds: [await Logs.GenerateEmbed(ticketDetails, message)],
+      });
       message.channel.send(
         `**Your Ticket has been submitted!** A helper will be with you shortly.`
       );

@@ -5,7 +5,7 @@ import { GuildConfigDto } from '../data/dtos/guildConfig.dto';
 
 export default class MessageEvent extends Event {
   constructor() {
-    super('message');
+    super('messageCreate');
   }
 
   async run(client: DiscordClient, message: Message) {
@@ -18,7 +18,12 @@ export default class MessageEvent extends Event {
     if (!guildConfig)
       guildConfig = await client.API.DiscordConfig.create(guildId);
 
-    client.commands.get('ticket').run(client, message, [], guildConfig);
+    //Move Try catch inside ticket command?
+    try {
+      client.commands.get('ticket').run(client, message, [], guildConfig);
+    } catch {
+      console.log('Unable To Execute Ticket Command'); //Not all Messages are tickets so pointless sending a message to the channel
+    }
 
     if (message.content.startsWith(guildConfig.prefix)) {
       const args = message.content.slice(guildConfig.prefix.length).split(/ +/);
@@ -28,7 +33,13 @@ export default class MessageEvent extends Event {
 
       if (command) {
         args.shift();
-        command.run(client, message, args, guildConfig);
+        try {
+          command.run(client, message, args, guildConfig);
+        } catch (err) {
+          message.channel.send(
+            'There was an error when attempting to execute this command'
+          );
+        }
       }
     }
   }

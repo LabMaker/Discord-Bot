@@ -9,7 +9,7 @@ export default class Prefix extends Command {
   }
 
   async run(client: DiscordClient, message: Message, args: string[]) {
-    if (message.channel.type == 'dm') return;
+    if (message.channel.type == 'DM') return;
 
     const ticketId = message.channel.name.toLowerCase().replace('ticket-', '');
 
