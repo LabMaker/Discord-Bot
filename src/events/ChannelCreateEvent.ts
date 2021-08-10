@@ -21,6 +21,9 @@ export default class MessageEvent extends Event {
       return;
     }
 
+    const guildId = channel.guild.id;
+    const channelId = channel.id;
+
     let x = channel.guild.me.joinedTimestamp / 1000;
     if (x >= x + 10) return; // if the bot just joined the server the channelcreate event will get activated after 10 sec
     if (
@@ -37,7 +40,7 @@ export default class MessageEvent extends Event {
         `Welcome! I'm going to need some more information before I can find you a suitable tutor. (Enter !stop at Anytime to cancel).`
       );
 
-      //await Ticket.create({ ticketId });
+      await client.API.Ticket.create(guildId, Number(ticketId), channelId);
 
       channel.send(`**Is this an exam, assignment or homework sheet?**`);
     }, 1500);

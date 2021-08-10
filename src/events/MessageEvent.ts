@@ -12,14 +12,13 @@ export default class MessageEvent extends Event {
     if (message.author.bot) return;
 
     const guildId = message.guild.id;
-    let guildConfig: GuildConfigDto = await client.API.DiscordConfig.getOne(
-      guildId
-    );
 
-    client.commands.get('ticket').run(client, message, [], guildConfig);
+    let guildConfig = await client.API.DiscordConfig.getOne(guildId);
 
     if (!guildConfig)
       guildConfig = await client.API.DiscordConfig.create(guildId);
+
+    client.commands.get('ticket').run(client, message, [], guildConfig);
 
     if (message.content.startsWith(guildConfig.prefix)) {
       const args = message.content.slice(guildConfig.prefix.length).split(/ +/);

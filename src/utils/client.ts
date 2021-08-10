@@ -1,5 +1,6 @@
 import { Client, ClientOptions, Collection } from 'discord.js';
 import { APIHandler } from '../data/apiHandler';
+import { TicketDto } from '../data/dtos/ticket.dto';
 import Command from './Base/Command';
 import Event from './Base/Event';
 
@@ -7,6 +8,7 @@ export default class DiscordClient extends Client {
   private _commands = new Collection<string, Command>();
   private _events = new Collection<string, Event>();
   private _apiHandler = new APIHandler();
+  private _tickets: TicketDto[];
 
   private _prefix = '?';
 
@@ -28,6 +30,14 @@ export default class DiscordClient extends Client {
 
   get API(): APIHandler {
     return this._apiHandler;
+  }
+
+  get tickets(): TicketDto[] {
+    return this._tickets;
+  }
+
+  set tickets(tickets: TicketDto[]) {
+    this._tickets = tickets;
   }
 
   set prefix(prefix: string) {
