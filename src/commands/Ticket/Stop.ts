@@ -9,20 +9,20 @@ export default class Prefix extends Command {
   }
 
   async run(client: DiscordClient, message: Message, args: string[]) {
-    // if (message.channel.type == 'dm') return;
+    if (message.channel.type == 'DM') return;
 
-    // const ticketId = message.channel.name.toLowerCase().replace('ticket-', '');
+    const ticketId = message.channel.name.toLowerCase().replace('ticket-', '');
+    const guildId = message.guild.id;
 
-    // if (isNaN(Number(ticketId))) return;
+    if (isNaN(Number(ticketId))) return;
 
-    // await Ticket.findOneAndUpdate({ ticketId }, { submitted: true });
+    const ticketDetails = await client.API.Ticket.getOne(guildId, ticketId);
+    ticketDetails.submitted = true;
 
-    // message.channel.send(
-    //   `Stopped Ticket Creation. If you would like to restart type !start`
-    // );
+    await client.API.Ticket.update(ticketDetails);
 
     message.channel.send(
-      `Ticket System is currently disabled sorry for the inconvience`
+      `Stopped Ticket Creation. If you would like to restart type !start`
     );
   }
 }

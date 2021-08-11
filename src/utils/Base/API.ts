@@ -48,4 +48,17 @@ export class API {
       return null;
     }
   }
+
+  async delete(url?: string): Promise<any> {
+    try {
+      if (!url) {
+        return (await axios.delete(this.APIUrl)).data;
+      } else {
+        return (await axios.delete(url)).data;
+      }
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
 }

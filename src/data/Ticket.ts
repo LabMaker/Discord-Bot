@@ -29,4 +29,9 @@ export class TicketAPI extends API {
   async update(updatedTicket: TicketDto): Promise<TicketDto | any> {
     return await this.put(updatedTicket);
   }
+
+  async delete(ticketId: string): Promise<TicketDto | any> {
+    const url = this.getUrl() + ticketId;
+    return await this.delete(url);
+  }
 }
