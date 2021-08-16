@@ -1,5 +1,4 @@
-import { DiscordConfigAPI } from './DiscordConfig';
-import { TicketAPI } from './Ticket';
+import { DiscordConfigAPI, TicketAPI } from 'labmaker-api-wrapper';
 
 export class APIHandler {
   public DiscordConfig = new DiscordConfigAPI();

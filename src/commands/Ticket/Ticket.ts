@@ -5,7 +5,7 @@ import Logs from '../../utils/Logs';
 
 export default class Prefix extends Command {
   constructor() {
-    super('ticket', 'Ticket', []);
+    super('ticket', 'Ticket', ['']);
   }
 
   async run(client: DiscordClient, message: Message, args: string[]) {
