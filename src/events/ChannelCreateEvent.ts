@@ -1,10 +1,4 @@
-import {
-  Channel,
-  DMChannel,
-  Message,
-  NewsChannel,
-  TextChannel,
-} from 'discord.js';
+import { DMChannel, NewsChannel, TextChannel } from 'discord.js';
 import Event from '../utils/Base/Event';
 import DiscordClient from '../utils/client';
 

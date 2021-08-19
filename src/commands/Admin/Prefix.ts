@@ -1,5 +1,5 @@
-import { Message } from 'discord.js';
-import { GuildConfigDto } from '../../data/dtos/guildConfig.dto';
+import { Message, Permissions } from 'discord.js';
+import { GuildConfigDto } from 'labmaker-api-wrapper';
 import Command from '../../utils/Base/Command';
 import DiscordClient from '../../utils/client';
 
@@ -14,6 +14,10 @@ export default class Prefix extends Command {
     args: string[],
     guildConfig: GuildConfigDto
   ) {
+    if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+      return message.channel.send('Invalid Permission to use command');
+    }
+
     const guildId = message.guild.id;
     const prefix = args[0];
 

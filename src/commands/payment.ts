@@ -17,6 +17,20 @@ export default class Payment extends Command {
     const payments = await client.API.DiscordConfig.getPayments(
       guildConfig.paymentConfigId
     );
+    let buttonTypes = [];
+    let types = [];
+
+    // payments.forEach((payment) => {
+    //   if (!types.includes(payment.type)) {
+    //     let tempButton = new MessageButton()
+    //       .setStyle('blurple')
+    //       .setLabel(payment.type)
+    //       .setID(payment.type);
+
+    //     buttonTypes.push(tempButton);
+    //     types.push(payment.type);
+    //   }
+    // });
 
     // let buttonTypes = [];
     // let types = [];

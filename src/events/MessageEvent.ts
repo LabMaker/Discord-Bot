@@ -1,7 +1,6 @@
 import { Message } from 'discord.js';
 import Event from '../utils/Base/Event';
 import DiscordClient from '../utils/client';
-import { GuildConfigDto } from '../data/dtos/guildConfig.dto';
 
 export default class MessageEvent extends Event {
   constructor() {
@@ -15,6 +14,8 @@ export default class MessageEvent extends Event {
 
     let guildConfig = await client.API.DiscordConfig.getOne(guildId);
 
+    console.log(guildConfig);
+    
     if (!guildConfig)
       guildConfig = await client.API.DiscordConfig.create(guildId);
 

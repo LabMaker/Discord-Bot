@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { TicketDto } from '../data/dtos/ticket.dto';
+import { TicketDto } from 'labmaker-api-wrapper';
 import DiscordClient from './client';
 
 export default class Logs {
