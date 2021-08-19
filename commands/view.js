@@ -13,7 +13,6 @@ module.exports = {
     if (Number(ticketID) === NaN) {
       return message.channel.send(`Ticket doesnt exist ${message.member}`);
     }
-
     const submitted = await ticket.get('submitted');
     const type = await ticket.get('type');
     const time = await ticket.get('time');
