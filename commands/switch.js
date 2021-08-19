@@ -18,7 +18,7 @@ module.exports = {
     }
 
     //Future Update: Get message content frombody and auto append discord tag to correct place
-    const customMessage = `If you still require help you can add me on discord at ${user.username}#${user.discriminator} and i can help you.`;
+    const customMessage = ` I can help you out. Send me a friend request on Discord at ${user.username}#${user.discriminator}.`;
     postURI = process.env.API_SITE + 'bot/updateMessage';
 
     axios.post(postURI, {
