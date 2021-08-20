@@ -14,10 +14,13 @@ export default class MessageEvent extends Event {
 
     let guildConfig = await client.API.DiscordConfig.getOne(guildId);
 
-    console.log(guildConfig);
-
-    if (!guildConfig)
+    if (!guildConfig._id) {
       guildConfig = await client.API.DiscordConfig.create(guildId);
+    }
+
+    if (!guildConfig._id) {
+      return; //After Two Tries move on.
+    }
 
     //Move Try catch inside ticket command?
     try {
