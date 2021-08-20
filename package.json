@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "16.6.x"
+  },
   "name": "labmaker-discord-bot",
   "version": "1.0.0",
   "description": "Discord Bot That handles New Tickets & Updates",
