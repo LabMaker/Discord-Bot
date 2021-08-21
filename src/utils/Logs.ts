@@ -1,6 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { GuildConfigDto, TicketDto } from 'labmaker-api-wrapper';
-import DiscordClient from './client';
+import { TicketDto } from 'labmaker-api-wrapper';
 
 export default class Logs {
   static async GenerateEmbed(

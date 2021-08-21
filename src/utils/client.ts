@@ -1,12 +1,21 @@
 import { Client, ClientOptions, Collection, Intents } from 'discord.js';
+import { GuildConfigDto, LabmakerAPI, PaymentDto } from 'labmaker-api-wrapper';
 import { APIHandler } from '../data/apiHandler';
 import Command from './Base/Command';
 import Event from './Base/Event';
+
+export type PaymentsType = {
+  serverId: string;
+  payments: PaymentDto[];
+};
 
 export default class DiscordClient extends Client {
   private _commands = new Collection<string, Command>();
   private _events = new Collection<string, Event>();
   private _apiHandler = new APIHandler();
+  public apiHandler = new LabmakerAPI();
+  private _payments = new Array<PaymentsType>();
+  private _configs = new Array<GuildConfigDto>();
 
   private _prefix = '?';
 
@@ -32,5 +41,36 @@ export default class DiscordClient extends Client {
 
   set prefix(prefix: string) {
     this.prefix = prefix;
+  }
+
+  getPayments(id: string): PaymentsType {
+    // console.log(this._payments);
+    // console.log(id);
+    return this._payments.find((payment) => payment.serverId === id);
+  }
+
+  setPayments(payment: PaymentsType) {
+    if (this._payments.length == 0) {
+      //console.log('IS EMPTY');
+      return this._payments.push(payment);
+    }
+
+    const index = this._payments.findIndex(
+      (p) => p.serverId === payment.serverId
+    );
+
+    if (index > -1) this._payments[index] = payment;
+    else this._payments.push(payment);
+  }
+
+  getConfig(id: string): GuildConfigDto {
+    return this._configs.find((config) => config._id === id);
+  }
+
+  setConfig(config: GuildConfigDto) {
+    const index = this._configs.findIndex((c) => c._id === config._id);
+
+    if (index > -1) this._configs[index] = config;
+    else this._configs[index] = config;
   }
 }

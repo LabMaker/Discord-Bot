@@ -1,5 +1,4 @@
-import { Message, MessageActionRow, MessageButton } from 'discord.js';
-import { MessageButtonStyles } from 'discord.js/typings/enums';
+import { Message } from 'discord.js';
 import { GuildConfigDto } from 'labmaker-api-wrapper';
 import Command from '../utils/Base/Command';
 import DiscordClient from '../utils/client';
@@ -16,9 +15,21 @@ export default class Payment extends Command {
     args?: string[],
     guildConfig?: GuildConfigDto
   ) {
+    const payments = await client.API.DiscordConfig.getPayments(
+      guildConfig.paymentConfigId
+    );
+
+    client.setPayments({ serverId: guildConfig._id, payments });
+
+    const row = await Payments.GeneratePayments(client, guildConfig);
+
+    if (!row) {
+      return message.channel.send('No Payments Available.');
+    }
+
     message.channel.send({
       content: 'Our Payment Methods',
-      components: [await Payments.GeneratePayments(client, guildConfig)],
+      components: [row],
     });
   }
 }

@@ -1,7 +1,6 @@
 import { Message } from 'discord.js';
 import Command from '../../utils/Base/Command';
 import DiscordClient from '../../utils/client';
-import Logs from '../../utils/Logs';
 
 export default class Prefix extends Command {
   constructor() {

@@ -1,9 +1,4 @@
-import {
-  Message,
-  MessageActionRow,
-  MessageButton,
-  MessageComponent,
-} from 'discord.js';
+import { MessageActionRow, MessageButton } from 'discord.js';
 import { GuildConfigDto } from 'labmaker-api-wrapper';
 import DiscordClient from './client';
 
@@ -12,13 +7,15 @@ export default class Payments {
     client: DiscordClient,
     guildConfig: GuildConfigDto
   ): Promise<MessageActionRow> {
-    const payments = await client.API.DiscordConfig.getPayments(
-      guildConfig.paymentConfigId
-    );
-
     let buttonTypes = [];
     let types = [];
-    payments.forEach((payment) => {
+
+    const paymentObject = client.getPayments(guildConfig._id);
+    if (!paymentObject) {
+      return;
+    }
+
+    paymentObject.payments.forEach((payment) => {
       if (!types.includes(payment.type)) {
         let tempButton = new MessageButton()
           .setStyle('PRIMARY')

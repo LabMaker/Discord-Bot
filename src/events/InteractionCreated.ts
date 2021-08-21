@@ -1,12 +1,4 @@
-import {
-  ButtonInteraction,
-  Interaction,
-  Message,
-  MessageActionRow,
-  MessageButton,
-} from 'discord.js';
-import { MessageButtonStyles } from 'discord.js/typings/enums';
-import { InternalSymbolName } from 'typescript';
+import { Interaction, MessageActionRow, MessageButton } from 'discord.js';
 import Event from '../utils/Base/Event';
 import DiscordClient from '../utils/client';
 import Payments from '../utils/GeneratePayment';
@@ -28,9 +20,7 @@ export default class MessageEvent extends Event {
       });
     }
 
-    const payments = await client.API.DiscordConfig.getPayments(
-      guildConfig.paymentConfigId
-    );
+    const payments = client.getPayments(guildConfig._id).payments;
     let paymentButtons = [];
 
     payments.forEach((payment) => {
