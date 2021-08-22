@@ -30,7 +30,7 @@ export default class Payment extends Command {
     }
 
     //Future Update: Get message content frombody and auto append discord tag to correct place
-    const customMessage = ` I can help you out. Send me a friend request on Discord at ${user.username}#${user.discriminator}. This is case Sensitive so please make sure you add "${user.username}#${user.discriminator}"`;
+    const customMessage = ` I can help you out. Send me a friend request on Discord at ${user.username}#${user.discriminator}.`;
     await client.API.RedditConfig.updateMessage(
       guildConfig.paymentConfigId,
       customMessage
