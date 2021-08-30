@@ -18,25 +18,29 @@ export default class Payment extends Command {
       return message.channel.send('Invalid Permission to use command');
     }
 
-    let user = message.mentions.users.first();
-
-    if (!args[0]) {
-      user = message.author;
-    }
-
-    //ID was provided
-    if (!user) {
-      message.channel.send('Invalid user provided');
-    }
-
-    //Future Update: Get message content frombody and auto append discord tag to correct place
-    const customMessage = `Add me on Discord ${user.username}#${user.discriminator}.`;
-
-    await client.API.Reddit.updateMessage(
-      guildConfig.paymentConfigId,
-      customMessage
+    return message.channel.send(
+      'This method is currently disabled. Go to https://labmaker.vercel.app/ and update manually'
     );
 
-    message.channel.send(customMessage);
+    // let user = message.mentions.users.first();
+
+    // if (!args[0]) {
+    //   user = message.author;
+    // }
+
+    // //ID was provided
+    // if (!user) {
+    //   message.channel.send('Invalid user provided');
+    // }
+
+    // //Future Update: Get message content frombody and auto append discord tag to correct place
+    // const customMessage = `Add me on Discord ${user.username}#${user.discriminator}.`;
+
+    // await client.API.Reddit.updateMessage(
+    //   guildConfig.paymentConfigId,
+    //   customMessage
+    // );
+
+    // message.channel.send(customMessage);
   }
 }
