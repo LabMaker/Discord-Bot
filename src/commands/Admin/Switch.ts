@@ -32,7 +32,7 @@ export default class Payment extends Command {
     //Future Update: Get message content frombody and auto append discord tag to correct place
     const customMessage = `Add me on Discord ${user.username}#${user.discriminator}.`;
 
-    await client.API.RedditConfig.updateMessage(
+    await client.API.Reddit.updateMessage(
       guildConfig.paymentConfigId,
       customMessage
     );

@@ -15,7 +15,7 @@ export default class Payment extends Command {
     args?: string[],
     guildConfig?: GuildConfigDto
   ) {
-    const payments = await client.API.DiscordConfig.getPayments(
+    const payments = await client.API.Discord.getPayments(
       guildConfig.paymentConfigId
     );
 

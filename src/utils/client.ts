@@ -1,6 +1,5 @@
 import { Client, ClientOptions, Collection, Intents } from 'discord.js';
-import { GuildConfigDto, LabmakerAPI, PaymentDto } from 'labmaker-api-wrapper';
-import { APIHandler } from '../data/apiHandler';
+import LabmakerAPI, { GuildConfigDto, PaymentDto } from 'labmaker-api-wrapper';
 import Command from './Base/Command';
 import Event from './Base/Event';
 
@@ -12,8 +11,8 @@ export type PaymentsType = {
 export default class DiscordClient extends Client {
   private _commands = new Collection<string, Command>();
   private _events = new Collection<string, Event>();
-  private _apiHandler = new APIHandler();
-  public apiHandler = new LabmakerAPI();
+  private _apiHandler = new LabmakerAPI(process.env.API_URL, { debug: true });
+  // public apiHandler = new LabmakerAPI(process.env.API_URL);
   private _payments = new Array<PaymentsType>();
   private _configs = new Array<GuildConfigDto>();
 
@@ -35,7 +34,7 @@ export default class DiscordClient extends Client {
     return this._prefix;
   }
 
-  get API(): APIHandler {
+  get API(): LabmakerAPI {
     return this._apiHandler;
   }
 

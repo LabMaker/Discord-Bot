@@ -23,7 +23,7 @@ export default class Prefix extends Command {
       `Started New Ticket, if you would like to stop the ticket use !stop`
     );
 
-    await client.API.Ticket.create(guildId, Number(ticketId), channelId);
+    await client.API.Ticket.create(guildId, ticketId, channelId);
 
     message.channel.send(
       `**Is this an exam, assignment or homework sheet?** Include the subject as well.`

@@ -12,10 +12,10 @@ export default class MessageEvent extends Event {
 
     const guildId = message.guild.id;
 
-    let guildConfig = await client.API.DiscordConfig.getOne(guildId);
+    let guildConfig = await client.API.Discord.getOne(guildId);
 
     if (!guildConfig._id) {
-      guildConfig = await client.API.DiscordConfig.create(guildId);
+      guildConfig = await client.API.Discord.create(guildId);
     }
 
     if (!guildConfig._id) {

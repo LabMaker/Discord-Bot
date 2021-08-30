@@ -11,7 +11,7 @@ export default class MessageEvent extends Event {
   async run(client: DiscordClient, interaction: Interaction) {
     if (!interaction.isButton()) return;
     const guildId = interaction.guild.id;
-    let guildConfig = await client.API.DiscordConfig.getOne(guildId);
+    let guildConfig = await client.API.Discord.getOne(guildId);
 
     if (interaction.customId == 'back') {
       interaction.update({

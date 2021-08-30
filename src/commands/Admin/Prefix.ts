@@ -22,7 +22,7 @@ export default class Prefix extends Command {
     const prefix = args[0];
 
     try {
-      guildConfig = await client.API.DiscordConfig.update({
+      guildConfig = await client.API.Discord.update({
         ...guildConfig,
         prefix,
       });

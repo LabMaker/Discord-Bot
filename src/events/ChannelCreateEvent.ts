@@ -34,7 +34,7 @@ export default class MessageEvent extends Event {
         `Welcome! I'm going to need some more information before I can find you a suitable tutor. (Enter !stop at Anytime to cancel).`
       );
 
-      await client.API.Ticket.create(guildId, Number(ticketId), channelId);
+      await client.API.Ticket.create(guildId, ticketId, channelId);
 
       channel.send(`**Is this an exam, assignment or homework sheet?**`);
     }, 1500);

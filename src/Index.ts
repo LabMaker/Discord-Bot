@@ -6,6 +6,7 @@ dotenv.config();
 
 const intents = new Intents(32767);
 const client = new DiscordClient({ intents });
+client.API.setAccessToken(process.env.API_TOKEN);
 
 (async () => {
   await registerCommands(client);
