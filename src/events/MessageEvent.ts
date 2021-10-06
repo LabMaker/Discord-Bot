@@ -30,6 +30,11 @@ export default class MessageEvent extends Event {
     }
 
     if (message.content.startsWith(guildConfig.prefix)) {
+      //Message is only <Prefix>
+      if (message.content === guildConfig.prefix) {
+        return;
+      }
+
       const args = message.content.slice(guildConfig.prefix.length).split(/ +/);
       const commandName = args[0];
 

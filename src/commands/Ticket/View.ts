@@ -16,10 +16,10 @@ export default class Prefix extends Command {
       return message.channel.send(`Ticket doesnt exist ${message.member}`);
     }
 
-    //message.channel.send(await Logs.GenerateEmbed(ticketId, message));
+    // message.channel.send(await Logs.GenerateEmbed(ticketId, message));
 
-    message.channel.send(
-      `Ticket System is currently disabled sorry for the inconvience`
-    );
+    // message.channel.send(
+    //   `Ticket System is currently disabled sorry for the inconvience`
+    // );
   }
 }

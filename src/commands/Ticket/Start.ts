@@ -28,8 +28,5 @@ export default class Prefix extends Command {
     message.channel.send(
       `**Is this an exam, assignment or homework sheet?** Include the subject as well.`
     );
-    message.channel.send(
-      `Ticket System is currently disabled sorry for the inconvience`
-    );
   }
 }
