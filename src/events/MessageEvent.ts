@@ -10,6 +10,18 @@ export default class MessageEvent extends Event {
   async run(client: DiscordClient, message: Message) {
     if (message.author.bot) return;
 
+    if (message.channel.id == '863424666052198410' && !message.author.bot) {
+      message
+        .reply('This is a log channel please use the main channel')
+        .then((msg) => {
+          setTimeout(() => {
+            message.delete();
+            msg.delete();
+          }, 5000);
+        });
+      return;
+    }
+
     const guildId = message.guild.id;
 
     let guildConfig = await client.API.Discord.getOne(guildId);
