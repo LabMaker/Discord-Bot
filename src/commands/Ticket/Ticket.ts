@@ -49,9 +49,19 @@ export default class Prefix extends Command {
       ticketDetails.budget = message.content;
       ticketDetails.submitted = true;
       await client.API.Ticket.update(ticketDetails);
-      message.channel.send({
-        embeds: [await Logs.GenerateEmbed(ticketDetails, message)],
-      });
+      const embeds = [await Logs.GenerateEmbed(ticketDetails, message)];
+
+      message.channel.send({ embeds });
+
+      //Hard Code Send Log to specific Server (Can Edit this into the DB  instead of hardcode if project gets revived)
+      const channel = client.guilds
+        .resolve('863423914230546462')
+        .channels.resolve('863424666052198410');
+
+      if (channel.isText()) {
+        channel.send({ embeds });
+      }
+
       message.channel.send(
         `**Your Ticket has been submitted!** A helper will be with you shortly.`
       );
