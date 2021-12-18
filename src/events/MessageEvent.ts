@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import Event from '../utils/Base/Event';
 import DiscordClient from '../utils/client';
+import { getArgsFromMsg } from '../utils/Helpers';
 
 export default class MessageEvent extends Event {
   constructor() {
@@ -34,7 +35,7 @@ export default class MessageEvent extends Event {
       return; //After Two Tries move on.
     }
 
-    //Move Try catch inside ticket command?
+    // Move Try catch inside ticket command?
     try {
       client.commands.get('ticket').run(client, message, [], guildConfig);
     } catch {
@@ -42,18 +43,18 @@ export default class MessageEvent extends Event {
     }
 
     if (message.content.startsWith(guildConfig.prefix)) {
-      //Message is only <Prefix>
+      // If message is only <Prefix>
       if (message.content === guildConfig.prefix) {
         return;
       }
 
-      const args = message.content.slice(guildConfig.prefix.length).split(/ +/);
-      const commandName = args[0];
-
+      const { commandName, args } = getArgsFromMsg(
+        message.content,
+        guildConfig.prefix.length
+      );
       const command = client.commands.get(commandName.toLowerCase());
 
       if (command) {
-        args.shift();
         try {
           command.run(client, message, args, guildConfig);
         } catch (err) {

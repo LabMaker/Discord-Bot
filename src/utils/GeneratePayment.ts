@@ -20,7 +20,7 @@ export default class Payments {
         let tempButton = new MessageButton()
           .setStyle('PRIMARY')
           .setLabel(payment.type)
-          .setCustomId(payment.type);
+          .setCustomId(`paymentoption:${payment.type}`);
 
         buttonTypes.push(tempButton);
         types.push(payment.type);
