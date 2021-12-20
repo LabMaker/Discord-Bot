@@ -4,12 +4,13 @@ import {
   Message,
   MessageActionRow,
   MessageButton,
+  TextChannel,
 } from 'discord.js';
 import { GuildConfigDto } from '../../../API-Wrapper/lib';
 import Event from '../utils/Base/Event';
 import DiscordClient from '../utils/client';
 import Payments from '../utils/GeneratePayment';
-import { getArgsFromMsg } from '../utils/Helpers';
+import { getArgsFromMsg, getTicketNo } from '../utils/Helpers';
 import Invoicer from '../utils/Invoicer';
 
 export default class MessageEvent extends Event {
@@ -128,8 +129,9 @@ export default class MessageEvent extends Event {
         let rmsg = await interaction.channel.messages.fetch(replyRef.messageId);
         let { args } = getArgsFromMsg(rmsg.content, guildConfig.prefix.length);
 
-        let checkout = await client.API.Pay.createOrder(args[0]);
-        console.log(checkout);
+        let ticketNum = getTicketNo(interaction.channel as TextChannel);
+
+        let checkout = await client.API.Pay.createOrder(ticketNum, args[0]);
         if (checkout) {
           interaction.update({
             content: `Invoice created! Please click the checkout button below to complete your payment of **$${args[0]}**.`,

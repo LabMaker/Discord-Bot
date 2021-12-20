@@ -28,6 +28,7 @@ export default class PayNotifications {
           })
         );
       });
+
       ws.on('message', (msg: Buffer) => {
         console.log('Got msg:', msg.toString());
       });
