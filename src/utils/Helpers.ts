@@ -1,4 +1,5 @@
 import { TextChannel } from 'discord.js';
+import { client } from '../Index';
 
 export function getArgsFromMsg(
   msg: string,
@@ -31,4 +32,27 @@ export function getTicketNo(channel: TextChannel): string {
   }
 
   return ticketNo;
+}
+
+/**
+ * Get tickets text channel from its number.
+ * @param ticketNo Tickets number.
+ * @returns Ticket text channel.
+ */
+export function getChannelFromId(id: string): TextChannel {
+  if (!id) {
+    console.log('Attempted to get channel from undefined id');
+    return;
+  }
+
+  const channel = client.channels.cache.find((e) =>
+    e.isText() ? (e as TextChannel).id == id : null
+  ) as TextChannel;
+
+  if (!channel) {
+    console.log(`Couldn't find text channel from ticket number: ${id}`);
+    return null;
+  }
+
+  return channel;
 }

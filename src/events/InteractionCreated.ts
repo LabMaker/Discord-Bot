@@ -129,9 +129,10 @@ export default class MessageEvent extends Event {
         let rmsg = await interaction.channel.messages.fetch(replyRef.messageId);
         let { args } = getArgsFromMsg(rmsg.content, guildConfig.prefix.length);
 
-        let ticketNum = getTicketNo(interaction.channel as TextChannel);
-
-        let checkout = await client.API.Pay.createOrder(ticketNum, args[0]);
+        let checkout = await client.API.Pay.createOrder(
+          interaction.channelId,
+          args[0]
+        );
         if (checkout) {
           interaction.update({
             content: `Invoice created! Please click the checkout button below to complete your payment of **$${args[0]}**.`,

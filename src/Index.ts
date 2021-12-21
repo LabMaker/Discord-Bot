@@ -15,3 +15,5 @@ client.API.setAccessToken(process.env.API_TOKEN);
   PayNotifications.listen();
   await client.login(process.env.BOT_TOKEN);
 })();
+
+export { client };

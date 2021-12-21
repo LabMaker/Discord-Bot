@@ -1,9 +1,10 @@
+import { MessageEmbed } from 'discord.js';
+import WebSocket from 'ws';
+import { getChannelFromId } from './Helpers';
+
 /**
  * Get pay notifications from pay gateway.
  */
-
-import WebSocket from 'ws';
-
 export default class PayNotifications {
   public static listen() {
     try {
@@ -21,19 +22,64 @@ export default class PayNotifications {
 
       ws.on('open', () => {
         console.log('WS open');
-        ws.send(
-          JSON.stringify({
-            event: 'pay',
-            data: 'help me pls',
-          })
-        );
       });
 
       ws.on('message', (msg: Buffer) => {
-        console.log('Got msg:', msg.toString());
+        this.handleWSMsg(msg);
       });
     } catch (err) {
       console.log("Couldn't connect to pay gateway!", err);
     }
+  }
+
+  private static handleWSMsg(msg: Buffer) {
+    const pld = JSON.parse(msg.toString());
+
+    if (!pld.op) {
+      console.log('Recieved WS Message without an operation id, ignoring.');
+      return;
+    }
+
+    // Share proper types from api somehow, possibly put in wrapper
+    switch (pld.op) {
+      case 100:
+        this.sendPaymentCompletedMessage(pld.data);
+        break;
+    }
+  }
+
+  private static sendPaymentCompletedMessage(payload) {
+    const channel = getChannelFromId(payload.channelId);
+
+    if (!channel) return;
+
+    const breakdown = payload.breakdown;
+    const paidEmbed = new MessageEmbed()
+      .setColor('#10F9AB')
+      .setTitle('Payment Completed!')
+      .setDescription(
+        'The payment has been completed, your tutor can now get going with your work!'
+      )
+      .addFields(
+        {
+          name: 'Total Paid',
+          value: `${breakdown.gross.value} ${breakdown.gross.currencyCode}`,
+          inline: true,
+        },
+        {
+          name: 'Paypal Fee',
+          value: `${breakdown.fee.value} ${breakdown.fee.currencyCode}`,
+          inline: true,
+        },
+        {
+          name: 'After Fees',
+          value: `${breakdown.net.value} ${breakdown.net.currencyCode}`,
+          inline: true,
+        }
+      )
+      .setThumbnail(`https://i.imgur.com/E7PB9cr.gif`)
+      .setTimestamp();
+
+    channel.send({ embeds: [paidEmbed] });
   }
 }
