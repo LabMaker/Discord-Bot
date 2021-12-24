@@ -26,11 +26,11 @@ export default class MessageEvent extends Event {
 
     let guildConfig = await client.API.Discord.getOne(guildId);
 
-    if (!guildConfig._id) {
+    if (!guildConfig) {
       guildConfig = await client.API.Discord.create(guildId);
     }
 
-    if (!guildConfig._id) {
+    if (!guildConfig) {
       return; //After Two Tries move on.
     }
 

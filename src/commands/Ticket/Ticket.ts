@@ -15,13 +15,14 @@ export default class Prefix extends Command {
     let roles = message.member.roles.cache;
     if (roles.find((r) => r.id === '863817773393379358')) return;
 
-    const ticketId = channel.name.toLowerCase().replace('ticket-', '');
+    const ticketIdMsg = channel.name.toLowerCase().replace('ticket-', '');
     const guildId = channel.guild.id;
 
-    if (isNaN(Number(ticketId))) {
+    if (isNaN(Number(ticketIdMsg))) {
       return message.channel.send(`Invalid Ticket ID ${message.member}`);
     }
 
+    const ticketId = Number(ticketIdMsg);
     const ticketDetails = await client.API.Ticket.getOne(guildId, ticketId);
 
     if (ticketDetails.submitted) return;
@@ -54,12 +55,12 @@ export default class Prefix extends Command {
       message.channel.send({ embeds });
 
       //Hard Code Send Log to specific Server (Can Edit this into the DB  instead of hardcode if project gets revived)
-      const channel = client.guilds
-        .resolve('863423914230546462')
-        .channels.resolve('863424666052198410');
-
-      if (channel.isText()) {
-        channel.send({ embeds });
+      const guild = client.guilds.resolve('863423914230546462');
+      if (guild) {
+        const channel = guild.channels.resolve('863424666052198410');
+        if (channel.isText()) {
+          channel.send({ embeds });
+        }
       }
 
       message.channel.send(

@@ -26,8 +26,9 @@ export default class MessageEvent extends Event {
     )
       return;
 
-    const ticketId = channel.name.toLowerCase().replace('ticket-', '');
-    if (isNaN(Number(ticketId))) return;
+    const ticketIdMsg = channel.name.toLowerCase().replace('ticket-', '');
+    if (isNaN(Number(ticketIdMsg))) return;
+    const ticketId = Number(ticketIdMsg);
 
     setTimeout(async () => {
       channel.send(
