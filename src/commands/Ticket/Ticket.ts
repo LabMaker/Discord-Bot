@@ -51,13 +51,13 @@ export default class Prefix extends Command {
 
       message.channel.send({ embeds });
 
-      // Hard Code Send Log to specific Server (Can Edit this into the DB  instead of hardcode if project gets revived)
-      const channel = client.guilds
-        .resolve('863423914230546462')
-        .channels.resolve('863424666052198410');
-
-      if (channel.isText()) {
-        channel.send({ embeds });
+      //Hard Code Send Log to specific Server (Can Edit this into the DB  instead of hardcode if project gets revived)
+      const guild = client.guilds.resolve('863423914230546462');
+      if (guild) {
+        const channel = guild.channels.resolve('863424666052198410');
+        if (channel.isText()) {
+          channel.send({ embeds });
+        }
       }
 
       message.channel.send(

@@ -11,12 +11,14 @@ export default class Prefix extends Command {
     if (message.channel.type == 'DM') return;
 
     const guildId = message.guild.id;
-    const ticketId = Number(
-      message.channel.name.toLowerCase().replace('ticket-', '')
-    );
+    const ticketIdMsg = message.channel.name
+      .toLowerCase()
+      .replace('ticket-', '');
     const channelId = message.channel.id;
 
-    if (isNaN(ticketId)) return;
+    if (isNaN(Number(ticketIdMsg))) return;
+    const ticketId = Number(ticketIdMsg);
+
     const ticketDetails = await client.API.Ticket.getOne(guildId, ticketId);
 
     await client.API.Ticket.deleteTicket(ticketDetails.id);

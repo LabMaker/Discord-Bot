@@ -15,7 +15,6 @@ export default class DiscordClient extends Client {
   // public apiHandler = new LabmakerAPI(process.env.API_URL);
   private _payments = new Array<PaymentsType>();
   private _configs = new Array<GuildConfigDto>();
-
   private _prefix = '?';
 
   constructor(options?: ClientOptions) {
