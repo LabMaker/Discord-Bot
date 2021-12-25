@@ -1,5 +1,5 @@
 import { TextChannel } from 'discord.js';
-import { client } from '../Index';
+import DiscordClient from './client';
 
 export function getArgsFromMsg(
   msg: string,
@@ -19,14 +19,14 @@ export function getArgsFromMsg(
  * @param channel Ticket text channel.
  * @returns Ticket number.
  */
-export function getTicketNo(channel: TextChannel): string {
+export function getTicketNo(channel: TextChannel): number {
   // Channel must be under Open Orders category for it to be a valid ticket.
   if (channel.parent == null || channel.parent.name != 'Open Orders')
     return null;
 
-  const ticketNo = channel.name.toLowerCase().replace('ticket-', '');
+  const ticketNo = Number(channel.name.toLowerCase().replace('ticket-', ''));
 
-  if (isNaN(Number(ticketNo))) {
+  if (isNaN(ticketNo)) {
     channel.send(`Invalid Ticket ID`);
     return null;
   }
@@ -39,7 +39,10 @@ export function getTicketNo(channel: TextChannel): string {
  * @param ticketNo Tickets number.
  * @returns Ticket text channel.
  */
-export function getChannelFromId(id: string): TextChannel {
+export function getChannelFromId(
+  client: DiscordClient,
+  id: string
+): TextChannel {
   if (!id) {
     console.log('Attempted to get channel from undefined id');
     return;

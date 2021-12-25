@@ -12,8 +12,6 @@ client.API.setAccessToken(process.env.API_TOKEN);
 (async () => {
   await registerCommands(client);
   await registerEvents(client);
-  PayNotifications.listen();
+  PayNotifications.listen(client);
   await client.login(process.env.BOT_TOKEN);
 })();
-
-export { client };

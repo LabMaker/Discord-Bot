@@ -77,7 +77,7 @@ export default class MessageEvent extends Event {
       return;
     }
 
-    const payments = client.getPayments(guildConfig._id).payments;
+    const payments = client.getPayments(guildConfig.id).payments;
     let paymentButtons = [];
 
     payments.forEach((payment) => {

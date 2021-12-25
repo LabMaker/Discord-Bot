@@ -10,10 +10,12 @@ export default class Prefix extends Command {
   async run(client: DiscordClient, message: Message, args: string[]) {
     if (message.channel.type == 'DM') return;
 
-    const ticketId = message.channel.name.toLowerCase().replace('ticket-', '');
+    const ticketId = Number(
+      message.channel.name.toLowerCase().replace('ticket-', '')
+    );
     const guildId = message.guild.id;
 
-    if (isNaN(Number(ticketId))) return;
+    if (isNaN(ticketId)) return;
 
     const ticketDetails = await client.API.Ticket.getOne(guildId, ticketId);
     ticketDetails.submitted = true;

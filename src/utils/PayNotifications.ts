@@ -1,15 +1,19 @@
 import { MessageEmbed } from 'discord.js';
 import WebSocket from 'ws';
+import DiscordClient from './client';
 import { getChannelFromId } from './Helpers';
 
 /**
  * Get pay notifications from pay gateway.
  */
 export default class PayNotifications {
-  public static listen() {
+  public static listen(client: DiscordClient) {
     try {
       const ws = new WebSocket('ws://localhost:3000/', {
         perMessageDeflate: false,
+        headers: {
+          Authorization: client.API.accessToken,
+        },
       });
 
       ws.on('error', (err) => {
@@ -24,15 +28,15 @@ export default class PayNotifications {
         console.log('WS open');
       });
 
-      ws.on('message', (msg: Buffer) => {
-        this.handleWSMsg(msg);
+      ws.on('message', (client: DiscordClient, msg: Buffer) => {
+        this.handleWSMsg(client, msg);
       });
     } catch (err) {
       console.log("Couldn't connect to pay gateway!", err);
     }
   }
 
-  private static handleWSMsg(msg: Buffer) {
+  private static handleWSMsg(client: DiscordClient, msg: Buffer) {
     const pld = JSON.parse(msg.toString());
 
     if (!pld.op) {
@@ -43,13 +47,13 @@ export default class PayNotifications {
     // Share proper types from api somehow, possibly put in wrapper
     switch (pld.op) {
       case 100:
-        this.sendPaymentCompletedMessage(pld.data);
+        this.sendPaymentCompletedMessage(client, pld.data);
         break;
     }
   }
 
-  private static sendPaymentCompletedMessage(payload) {
-    const channel = getChannelFromId(payload.channelId);
+  private static sendPaymentCompletedMessage(client: DiscordClient, payload) {
+    const channel = getChannelFromId(client, payload.channelId);
 
     if (!channel) return;
 

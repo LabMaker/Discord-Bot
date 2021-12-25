@@ -41,7 +41,7 @@ export default class Invoice extends Command {
       guildConfig.paymentConfigId
     );
 
-    client.setPayments({ serverId: guildConfig._id, payments });
+    client.setPayments({ serverId: guildConfig.id, payments });
 
     // pick payment method
     const row = await Payments.GeneratePayments(client, guildConfig);

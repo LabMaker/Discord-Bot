@@ -63,11 +63,11 @@ export default class DiscordClient extends Client {
   }
 
   getConfig(id: string): GuildConfigDto {
-    return this._configs.find((config) => config._id === id);
+    return this._configs.find((config) => config.id === id);
   }
 
   setConfig(config: GuildConfigDto) {
-    const index = this._configs.findIndex((c) => c._id === config._id);
+    const index = this._configs.findIndex((c) => c.id === config.id);
 
     if (index > -1) this._configs[index] = config;
     else this._configs[index] = config;

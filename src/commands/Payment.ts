@@ -19,7 +19,7 @@ export default class Payment extends Command {
       guildConfig.paymentConfigId
     );
 
-    client.setPayments({ serverId: guildConfig._id, payments });
+    client.setPayments({ serverId: guildConfig.id, payments });
 
     const row = await Payments.GeneratePayments(client, guildConfig);
 

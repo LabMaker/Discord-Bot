@@ -10,7 +10,7 @@ export default class Payments {
     let buttonTypes = [];
     let types = [];
 
-    const paymentObject = client.getPayments(guildConfig._id);
+    const paymentObject = client.getPayments(guildConfig.id);
     if (!paymentObject) {
       return;
     }
