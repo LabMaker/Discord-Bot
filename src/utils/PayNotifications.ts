@@ -28,7 +28,7 @@ export default class PayNotifications {
         console.log('WS open');
       });
 
-      ws.on('message', (client: DiscordClient, msg: Buffer) => {
+      ws.on('message', (msg: Buffer) => {
         this.handleWSMsg(client, msg);
       });
     } catch (err) {
@@ -48,6 +48,9 @@ export default class PayNotifications {
     switch (pld.op) {
       case 100:
         this.sendPaymentCompletedMessage(client, pld.data);
+        break;
+      default:
+        console.log(`Recieved unsupported operation ID: ${pld.op}`);
         break;
     }
   }
