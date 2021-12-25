@@ -4,13 +4,12 @@ import {
   Message,
   MessageActionRow,
   MessageButton,
-  TextChannel,
 } from 'discord.js';
 import { GuildConfigDto } from '../../../API-Wrapper/lib';
 import Event from '../utils/Base/Event';
 import DiscordClient from '../utils/client';
 import Payments from '../utils/GeneratePayment';
-import { getArgsFromMsg, getTicketNo } from '../utils/Helpers';
+import { getArgsFromMsg } from '../utils/Helpers';
 import Invoicer from '../utils/Invoicer';
 
 export default class MessageEvent extends Event {
