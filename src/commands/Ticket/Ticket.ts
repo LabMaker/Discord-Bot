@@ -1,6 +1,7 @@
 import { Message, TextChannel } from 'discord.js';
 import Command from '../../utils/Base/Command';
 import DiscordClient from '../../utils/client';
+import { getTicketNo } from '../../utils/Helpers';
 import Logs from '../../utils/Logs';
 
 export default class Prefix extends Command {
@@ -10,19 +11,15 @@ export default class Prefix extends Command {
 
   async run(client: DiscordClient, message: Message, args: string[]) {
     const channel = message.channel as TextChannel;
-    if (channel.parent == null || channel.parent.name != 'Open Orders') return;
+    const ticketId = getTicketNo(channel);
+    const guildId = channel.guild.id;
+
+    // If couldn't get ticket id, return. `getTicketNo` handles everything for us.
+    if (!ticketId) return;
 
     let roles = message.member.roles.cache;
     if (roles.find((r) => r.id === '863817773393379358')) return;
 
-    const ticketIdMsg = channel.name.toLowerCase().replace('ticket-', '');
-    const guildId = channel.guild.id;
-
-    if (isNaN(Number(ticketIdMsg))) {
-      return message.channel.send(`Invalid Ticket ID ${message.member}`);
-    }
-
-    const ticketId = Number(ticketIdMsg);
     const ticketDetails = await client.API.Ticket.getOne(guildId, ticketId);
 
     if (ticketDetails.submitted) return;
